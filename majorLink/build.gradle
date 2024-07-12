@@ -39,7 +39,6 @@ tasks.named('test') {
 }
 
 //Docker
-
 jar {
 	enabled = false
 }
