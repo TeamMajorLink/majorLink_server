@@ -44,7 +44,8 @@ jobs:
       
     # Spring Boot Build
     - name: Spring Boot Build
-      run: ./majorLink/gradlew clean build -x test
+      working-directory: ./majorLink  # 작업 디렉토리 설정
+      run: ./gradlew clean build -x test
 
 
 #----------------- Docker --------
