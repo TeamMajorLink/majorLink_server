@@ -50,9 +50,8 @@ jobs:
 
 #----------------- Docker --------
 
-    # Docker Image Build
     - name: Docker Image Build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGENAME }} .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME | toLowerCase }}/{{ secrets.DOCKERHUB_IMAGENAME | toLowerCase }} -f ./majorLink/Dockerfile ./majorLink
       
     # DockerHub Login
     - name: Docker Hub Login
