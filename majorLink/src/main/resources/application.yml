@@ -12,3 +12,22 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+  security:
+    jwt:
+      secret-key: ${SECRET_KEY}
+
+    oauth2:
+      naver:
+        client-id: ${CLIENT_ID}
+        secret: ${CLIENT_SECRET}
+        url:
+          auth: https://nid.naver.com
+          api: https://openapi.naver.com
+  data:
+    redis:
+      host: localhost
+      port: 6369
+      database: 0
+      
+server:
+  port: 9000
