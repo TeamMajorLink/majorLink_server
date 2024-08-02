@@ -23,7 +23,7 @@ public class UserNotification extends BaseEntity {
     private ActiveStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

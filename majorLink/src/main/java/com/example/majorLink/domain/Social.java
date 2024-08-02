@@ -21,10 +21,17 @@ public class Social extends BaseEntity{
     private SocialType socialType;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
-    private SocialStatus status;
+    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'CONNECTED'")
+    private SocialStatus socialStatus;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column
+    private String provider;
+
+    @Column
+    private Long providerId;
+
 }

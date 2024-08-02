@@ -1,5 +1,5 @@
 package com.example.majorLink.domain.enums;
 
-public enum MemberStatus {
+public enum UserStatus {
     ACTIVE, INACTIVE, PAUSE
 }
