@@ -2,16 +2,14 @@ package com.example.majorLink.domain;
 
 import com.example.majorLink.domain.enums.Gender;
 import com.example.majorLink.domain.enums.LearnPart;
-import com.example.majorLink.domain.enums.MemberStatus;
+import com.example.majorLink.domain.enums.UserStatus;
 import com.example.majorLink.domain.enums.Role;
-import com.example.majorLink.domain.mapping.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,11 +21,15 @@ import java.util.List;
 public class User extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(nullable = false, length = 20)
-    private String userName;
+    private String username;
+
+//    @Column(nullable = false, length = 20)
+//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10)")
@@ -38,6 +40,9 @@ public class User extends BaseEntity{
 
     @Column(nullable = false, length = 40)
     private String phone;
+
+    @Column(nullable = false)
+    private String profileImage;
 
     @Column(nullable = false, length = 40)
     private String firstMajor;
@@ -61,32 +66,9 @@ public class User extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
-    private MemberStatus status;
+    private UserStatus userStatus;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserImage profileImg;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Social social;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private ProfileCard profileCard;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserNotification> userNotificationList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserLecture> userLectureList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Liked> likedList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserChat> chatList = new ArrayList<>();
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }
