@@ -38,13 +38,13 @@ public class User extends BaseEntity{
     @Column(nullable = false, length = 40)
     private String email;
 
-    @Column(nullable = false, length = 40)
+//    @Column(nullable = false, length = 40)
     private String phone;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String profileImage;
 
-    @Column(nullable = false, length = 40)
+//    @Column(nullable = false, length = 40)
     private String firstMajor;
 
     @Column(length = 40)
@@ -54,14 +54,14 @@ public class User extends BaseEntity{
     private String favorite;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+//    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
+//    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private LearnPart learnPart;
 
-    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+//    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer point;
 
     @Enumerated(EnumType.STRING)
