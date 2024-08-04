@@ -4,10 +4,12 @@ import com.example.majorLink.domain.enums.SocialType;
 import com.example.majorLink.global.oauth2.OAuthLoginParams;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class NaverLoginParams implements OAuthLoginParams {
     private String authorizationCode;
