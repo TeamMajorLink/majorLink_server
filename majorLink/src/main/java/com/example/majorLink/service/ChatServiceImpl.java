@@ -45,6 +45,10 @@ public class ChatServiceImpl implements ChatService{
         return chatRoomRepository.findAll();
     }
 
+    @Override
+    public List<String> getChatroomUsernameById(Long roodId) {
+        return null;
+    }
 
 
     //채팅방 생성
@@ -66,6 +70,11 @@ public class ChatServiceImpl implements ChatService{
 //        UserChat userChat = UserChat.builder().chatRoom(chatRoom).user(user).build();
 //        return userChat.getUser().getId();
         return null;
+    }
+
+    @Override
+    public ChatRoom getChatroomById(Long roomId) {
+        return chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("해당 채팅방이 존재하지않습니다."));
     }
 
 }

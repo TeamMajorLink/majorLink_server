@@ -24,4 +24,6 @@ public interface ChatService {
 
     //채팅방 입장
     Long joinRoom(Long roomId, Long userId);
+
+    ChatRoom getChatroomById(Long roomId);
 }
