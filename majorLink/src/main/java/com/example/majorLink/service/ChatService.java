@@ -26,4 +26,7 @@ public interface ChatService {
     Long joinRoom(Long roomId, Long userId);
 
     ChatRoom getChatroomById(Long roomId);
+
+    //채팅방 전체조회
+    List<ChatRoom> getAllChatRoom();
 }

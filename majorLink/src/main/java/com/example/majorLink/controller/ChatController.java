@@ -1,16 +1,20 @@
 package com.example.majorLink.controller;
 
+import com.example.majorLink.converter.ChatRoomConverter;
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
+import com.example.majorLink.dto.ChatRoomRequestDTO;
+import com.example.majorLink.dto.ChatRoomResponseDTO;
 import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,6 +52,25 @@ public class ChatController {
         return result;
     }
 
+
+    //채팅방 생성 컨트롤러
+    @PostMapping("/chatrooms")
+    public ChatRoom createChatroom(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
+        return chatService.createChatroom(chatRoomRequestDTO.getName());
+    }
+
+
+    //채팅방 전체 조회 컨트롤러
+    @GetMapping("/chatrooms")
+    public List<ChatRoomResponseDTO> getAllChatRoom() {
+        return chatService.getAllChatRoom().stream().map(ChatRoomConverter::toChatRoomResponseDTO).toList();
+    }
+
+    //채팅 기록 조회 컨트롤러
+    @GetMapping("/chat/history/{roomId}")
+    public List<ChatMessage> getChatHistory(@PathVariable Long roomId) {
+        return chatService.getChatMessageById(roomId);
+    }
 
 
 

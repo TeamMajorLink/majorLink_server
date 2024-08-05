@@ -77,6 +77,11 @@ public class ChatServiceImpl implements ChatService{
         return chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("해당 채팅방이 존재하지않습니다."));
     }
 
+    @Override
+    public List<ChatRoom> getAllChatRoom() {
+        return chatRoomRepository.findAll();
+    }
+
 }
 
 
