@@ -53,6 +53,9 @@ public class ChatController {
     }
 
 
+
+
+
     //채팅방 생성 컨트롤러
     @PostMapping("/chatrooms")
     public ChatRoom createChatroom(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
