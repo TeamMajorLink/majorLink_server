@@ -5,6 +5,7 @@ import com.example.majorLink.domain.User;
 import com.example.majorLink.domain.enums.*;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
+import com.example.majorLink.dto.response.ProfileResponse;
 import com.example.majorLink.global.auth.AuthTokensGenerator;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.jwt.JwtConfig;
@@ -16,6 +17,7 @@ import com.example.majorLink.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -95,5 +97,19 @@ public class UserServiceImpl implements UserService {
         Tokens tokens = jwtService.createToken(String.valueOf(user.getId()));
 
         return tokens;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProfileResponse getProfile(User user) {
+        return ProfileResponse.builder()
+                .profileImg(user.getProfileImage())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .firstMajor(user.getFirstMajor())
+                .secondMajor(user.getSecondMajor())
+                .favorite(user.getFavorite())
+                .gender(user.getGender())
+                .build();
     }
 }
