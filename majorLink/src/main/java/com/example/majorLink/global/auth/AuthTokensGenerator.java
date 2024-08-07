@@ -1,6 +1,5 @@
 package com.example.majorLink.global.auth;
 
-import com.example.majorLink.global.infra.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
