@@ -12,6 +12,7 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+        dialect: org.hibernate.dialect.MySQLDialect
   security:
     jwt:
       secret-key: ${SECRET_KEY}
@@ -24,9 +25,12 @@ spring:
             scope:
               - email
               - name
+              - phone
+              - profile_image
+              - gender
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:9000/naver/callback
+            redirect-uri: ${BASE_LOGIN_URL}  # 기본 redirect-url
 
         provider:
           naver:
@@ -38,47 +42,20 @@ spring:
 
   data:
     redis:
-      host: localhost
-      port: 6369
-      database: 0
+      host: localhost # 도메인 구매 시 변경 예정
+      port: 6379
+      database: 1
+      
 server:
   port: 9000
 
-naver:
-  auth-url: "https://nid.naver.com"
-  api-url: "https://openapi.naver.com"
-#
-#
-#  spring:
-#    datasource:
-#      username: ${DB_USERNAME}
-#      password: ${DB_PASSWORD}
-#      url: ${DB_URL}
-#      driver-class-name: com.mysql.cj.jdbc.Driver
-#    jpa:
-#      properties:
-#        hibernate:
-#          show_sql: true
-#          format_sql: true
-#          use_sql_comments: true
-#          hbm2ddl:
-#            auto: update
-#    security:
-#      jwt:
-#        secret-key: ${SECRET_KEY}
-#
-#      oauth2:
-#        naver:
-#          client-id: ${CLIENT_ID}
-#          secret: ${CLIENT_SECRET}
-#          url:
-#            auth: https://nid.naver.com
-#            api: https://openapi.naver.com
-#    data:
-#      redis:
-#        host: localhost
-#        port: 6369
-#        database: 0
-#
-#  server:
-#    port: 9000
+logging:
+  level:
+    org:
+      hibernate:
+        type : trace
+
+default:
+  login:
+    redirect:
+      url: ${LOGIN_URL}

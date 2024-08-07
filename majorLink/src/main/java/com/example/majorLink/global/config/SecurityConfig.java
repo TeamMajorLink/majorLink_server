@@ -1,52 +1,45 @@
 package com.example.majorLink.global.config;
 
-import com.example.majorLink.global.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.example.majorLink.global.jwt.JwtAuthenticationFilter;
+import com.example.majorLink.global.jwt.JwtService;
+import com.example.majorLink.global.oauth2.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
-    public SecurityConfig(OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
-        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
-    }
+    private final OAuth2AuthenticationFailureHandler OAuth2AuthenticationFailureHandler;
+    private final OAuthLoginService oAuthLoginService;
+    private final JwtService jwtService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
-                .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // H2 콘솔 접근 허용
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**").permitAll() // /users 엔드포인트 접근 허용
-//                        .requestMatchers("/api/auth/naver").permitAll()
-//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/user/**").hasRole("USER")
-                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
-                )
-                .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 관리 비활성화
-//                .oauth2Login(configure ->
-//                        configure
-//                                .successHandler(oAuth2AuthenticationSuccessHandler)
-////                                .failureHandler(oAuth2AuthenticationFailureHandler)
-//                );
+                .httpBasic(AbstractHttpConfigurer::disable) // http form login 비활성화
+                .csrf(AbstractHttpConfigurer::disable) // csrf 필터 비활성화 -> cookies 사용하지 않으므로 위험 없음
+                .formLogin(AbstractHttpConfigurer::disable) // basic login 비활성화
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session 사용 X
+                .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(configure ->
+                        configure
+                                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                        .userService(oAuthLoginService))
+                                .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig // auth 로그인 페이지 return
+                                        .baseUri("/oauth/authorize"))
+                                .successHandler(oAuth2AuthenticationSuccessHandler)
+                                .failureHandler(OAuth2AuthenticationFailureHandler)
+                );
 
         return http.build();
     }
