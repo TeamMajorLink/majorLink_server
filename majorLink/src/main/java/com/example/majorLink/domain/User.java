@@ -25,11 +25,8 @@ public class User extends BaseEntity{
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "username", nullable = false, length = 20)
     private String username;
-
-//    @Column(nullable = false, length = 20)
-//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10)")
@@ -38,34 +35,34 @@ public class User extends BaseEntity{
     @Column(nullable = false, length = 40)
     private String email;
 
-//    @Column(nullable = false, length = 40)
+    @Column(name = "phone", length = 40)
     private String phone;
 
-//    @Column(nullable = false)
+    @Column(name = "profileImage")
     private String profileImage;
 
-//    @Column(nullable = false, length = 40)
+    @Column(name = "firstMajor", nullable = false, length = 40)
     private String firstMajor;
 
-    @Column(length = 40)
+    @Column(name = "secondMajor", length = 40)
     private String secondMajor;
 
     @Column(length = 40)
     private String favorite;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'TUTEE'")
     private Role role;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
     private LearnPart learnPart;
 
-//    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Column(nullable = false,  columnDefinition = "INT DEFAULT 0")
     private Integer point;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    @Column(name = "userStatus", columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
     private UserStatus userStatus;
 
     public void updateEmail(String email) {

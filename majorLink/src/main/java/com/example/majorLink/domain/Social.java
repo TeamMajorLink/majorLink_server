@@ -7,6 +7,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Social extends BaseEntity{
     private SocialType socialType;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'CONNECTED'")
+    @Column(name = "socialStatus", nullable = false, columnDefinition = "VARCHAR(30) DEFAULT 'CONNECTED'")
     private SocialStatus socialStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,9 +30,13 @@ public class Social extends BaseEntity{
     private User user;
 
     @Column
-    private String provider;
+    private String providerId;
 
-    @Column
-    private Long providerId;
+    public void updateSocialStatus(SocialStatus socialStatus) {
+        this.socialStatus = SocialStatus.CONNECTED;
+    }
+    public void updateUser(User user) {
+        this.user = user;
+    }
 
 }

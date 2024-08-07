@@ -1,60 +1,64 @@
 package com.example.majorLink.global.oauth2;
 
-import com.example.majorLink.global.auth.AuthTokens;
-import com.example.majorLink.global.auth.AuthTokensGenerator;
-import com.example.majorLink.global.infra.naver.NaverLoginParams;
-import com.example.majorLink.global.oauth2.OAuthLoginService;
+import com.example.majorLink.domain.Social;
+import com.example.majorLink.domain.enums.SocialStatus;
+//import com.example.majorLink.global.auth.AuthTokensGenerator;
+import com.example.majorLink.global.auth.Tokens;
+import com.example.majorLink.global.jwt.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final OAuthLoginService oAuthLoginService;
-    private final AuthTokensGenerator authTokensGenerator;
-
-    public OAuth2AuthenticationSuccessHandler(OAuthLoginService oAuthLoginService, AuthTokensGenerator authTokensGenerator) {
-        this.oAuthLoginService = oAuthLoginService;
-        this.authTokensGenerator = authTokensGenerator;
-    }
+    //    private final AuthTokensGenerator authTokensGenerator;
+    private final OAuthLoginService oAuthService;
+    private final JwtService jwtService;
+    @Value("${default.login.redirect.url}")
+    private String redirectUrl;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String authorizationCode = request.getParameter("code");
-        String state = request.getParameter("state");
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        if(authentication.getPrincipal() instanceof CustomOAuth2User oAuth2User) {
+            Social socialInfo = oAuth2User.getSocialInfo();
 
-        // NaverLoginParams 인스턴스 생성
-        NaverLoginParams params = new NaverLoginParams();
-        params.setAuthorizationCode(authorizationCode);
-        params.setState(state);
+            response.setCharacterEncoding("utf-8");
 
-        AuthTokens authTokens = oAuthLoginService.login(params);
+            if(socialInfo.getSocialStatus() == SocialStatus.CONNECTED){
+                String userUUID = String.valueOf(socialInfo.getUser().getId());
 
-        // 토큰을 클라이언트에게 반환
-        response.addHeader("Authorization", "Bearer " + authTokens.getAccessToken());
+                Tokens tokens = jwtService.createAndSaveTokens(userUUID);
 
-        // 로그인 성공 후 리다이렉션 URL 설정
-        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:9000/naver/callback")
-                .path("/home") // 로그인 후 이동할 페이지
-                .queryParam("access_token", authTokens.getAccessToken())
-                .build()
-                .toUriString();
+                String uri = UriComponentsBuilder.fromUriString(redirectUrl + "/member")
+                        .queryParam("X-Auth-Token", tokens.getAccessToken())
+                        .queryParam("refresh-Token", tokens.getRefreshToken())
+                        .toUriString();
 
-        response.sendRedirect(redirectUrl);
+                response.sendRedirect(uri);
+                return;
+            }
 
+            OAuthAttributes attributes = oAuth2User.getOAuthAttributes();
+            String uri = UriComponentsBuilder.fromUriString(redirectUrl + "/new-user")
+//                    .queryParam("temp-token", String.valueOf(socialInfo.getTemporalToken()))
+                    .queryParam("username", attributes.getUsername())
+                    .queryParam("email", attributes.getEmail())
+                    .queryParam("profileImg", attributes.getProfileImg())
+                    .queryParam("phone", attributes.getPhone())
+                    .queryParam("gender", attributes.getGender())
+                    .toUriString();
 
+            response.sendRedirect(uri);
+        }
     }
+
 }
