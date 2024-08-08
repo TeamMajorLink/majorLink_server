@@ -3,7 +3,6 @@ package com.example.majorLink.controller;
 import com.example.majorLink.domain.Review;
 import com.example.majorLink.dto.request.ReviewRequestDTO;
 import com.example.majorLink.dto.response.ReviewResponseDTO;
-import com.example.majorLink.service.ReviewService.ReviewQueryService;
 import com.example.majorLink.service.ReviewService.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final ReviewQueryService reviewQueryService;
 
     // 리뷰 추가하는 api
     @PostMapping("/{lectureId}/reviews")
@@ -58,7 +56,7 @@ public class ReviewController {
     @ResponseBody
     public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
                                                           @RequestParam(name = "page") Integer page){
-        Page<Review> reviewList = reviewQueryService.getReviewList(lectureId, page-1);
+        Page<Review> reviewList = reviewService.getReviewList(lectureId, page-1);
 
         return ReviewResponseDTO.ReviewPreViewList.builder()
                 .reviewList(reviewList.stream()

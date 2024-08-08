@@ -9,4 +9,6 @@ public interface ReviewService {
     Review createReview(Long userId, Long lectureId, ReviewRequestDTO request);
     Review updateReview(Long reviewId, ReviewRequestDTO request);
     void deleteReview(Long reviewId);
+
+    Page<Review> getReviewList(Long lectureId, Integer page);
 }
