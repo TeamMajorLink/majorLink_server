@@ -8,6 +8,7 @@ import com.example.majorLink.dto.request.SignUpRequest;
 import com.example.majorLink.dto.response.ProfileResponse;
 import com.example.majorLink.global.auth.AuthTokensGenerator;
 import com.example.majorLink.global.auth.Tokens;
+import com.example.majorLink.global.auth.service.PasswordService;
 import com.example.majorLink.global.jwt.JwtConfig;
 import com.example.majorLink.global.jwt.JwtService;
 import com.example.majorLink.global.auth.service.RedisService;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final SocialService socialService;
     private final RedisService redisService;
     private final JwtService jwtService;
-    private final AuthTokensGenerator authTokensGenerator;
+    private final PasswordService passwordService;
 
     @Override
     public Tokens signIn(SignInRequest request) {
@@ -66,10 +67,13 @@ public class UserServiceImpl implements UserService {
                 Gender gender = Gender.valueOf(signUpRequest.getGender().toUpperCase());
                 LearnPart learnPart = LearnPart.valueOf(signUpRequest.getLearnPart().toUpperCase());
 
+                // 비밀 번호 암호화
+                String encryptedPassword = passwordService.encodePassword(signUpRequest.getPassword());
                 user = User.builder()
                         .id(UUID.randomUUID())
                         .email(signUpRequest.getEmail())
                         .username(signUpRequest.getUsername())
+                        .password(encryptedPassword)
                         .gender(gender)
                         .phone(signUpRequest.getPhone())
                         .profileImage(signUpRequest.getProfileImg())
