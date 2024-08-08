@@ -1,13 +1,8 @@
 package com.example.majorLink.global.oauth2;
 
 import com.example.majorLink.domain.Social;
-import com.example.majorLink.domain.User;
 import com.example.majorLink.domain.enums.*;
-import com.example.majorLink.dto.request.SignInRequest;
-import com.example.majorLink.dto.request.SignUpRequest;
-import com.example.majorLink.global.auth.AuthTokens;
 //import com.example.majorLink.global.auth.AuthTokensGenerator;
-import com.example.majorLink.global.auth.AuthTokensGenerator;
 import com.example.majorLink.repository.SocialRepository;
 import com.example.majorLink.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +16,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -30,7 +24,6 @@ public class OAuthLoginService extends DefaultOAuth2UserService {
     private static final Logger logger = LoggerFactory.getLogger(OAuthLoginService.class);
     private final UserRepository userRepository;
     private final SocialRepository socialRepository;
-    private final AuthTokensGenerator authTokensGenerator;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
