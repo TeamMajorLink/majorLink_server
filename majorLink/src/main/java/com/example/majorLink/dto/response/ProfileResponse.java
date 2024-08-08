@@ -16,5 +16,5 @@ public class ProfileResponse {
     private String secondMajor;
     private String favorite;
     private Gender gender;
-    private String phone;
+    private Integer point;
 }

@@ -114,6 +114,7 @@ public class UserServiceImpl implements UserService {
                 .secondMajor(user.getSecondMajor())
                 .favorite(user.getFavorite())
                 .gender(user.getGender())
+                .point(user.getPoint())
                 .build();
     }
 
