@@ -28,6 +28,9 @@ public class User extends BaseEntity{
     @Column(name = "username", nullable = false, length = 20)
     private String username;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10)")
     private Gender gender;
