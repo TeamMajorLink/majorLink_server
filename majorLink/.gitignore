@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -40,3 +40,5 @@ majorLink/.DS_Store
 .DS_Store
 majorLink/.DS_Store
 .DS_Store
+
+/**/secret

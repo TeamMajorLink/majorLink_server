@@ -29,6 +29,4 @@ public class Notification extends BaseEntity{
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'UNCHECK'")
     private CheckStatus status;
 
-    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL)
-    private List<UserNotification> userNotificationList = new ArrayList<>();
 }

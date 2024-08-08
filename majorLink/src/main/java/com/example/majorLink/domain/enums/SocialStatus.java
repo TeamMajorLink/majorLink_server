@@ -1,5 +1,5 @@
 package com.example.majorLink.domain.enums;
 
 public enum SocialStatus {
-    ACTIVE, INACTIVE
+    CONNECTED, WAITING_SIGN_UP, DISCONNECTED
 }

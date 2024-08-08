@@ -1,0 +1,138 @@
+package com.example.majorLink.global.jwt;
+
+import com.example.majorLink.global.auth.Tokens;
+import com.example.majorLink.global.auth.service.RedisService;
+import com.example.majorLink.global.auth.service.UserDetailsService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+import static com.example.majorLink.global.jwt.JwtConfig.ACCESS_TOKEN_VALID_TIME;
+import static com.example.majorLink.global.jwt.JwtConfig.REFRESH_TOKEN_VALID_TIME;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class JwtService implements InitializingBean {
+    private static final String UUID = "uuid";
+    private static SecretKey secretKey;
+
+    private final UserDetailsService userDetailService;
+    private final RedisService redisService;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // jwt 시크릿 키 설정
+        String secret = "${spring.security.jwt.secret-key}";
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    public Tokens createToken(String userUUID) {
+        Date now = new Date();
+
+        String accessToken = Jwts.builder()
+                .expiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
+                .subject("access-token")
+                .claim(UUID, userUUID)
+                .issuedAt(now)
+                .signWith(secretKey)
+                .compact();
+
+        String refreshToken = Jwts.builder()
+                .expiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
+                .subject("refresh-token")
+                .claim(UUID, userUUID)
+                .issuedAt(now)
+                .signWith(secretKey)
+                .compact();
+
+        Tokens tokens = new Tokens(accessToken, refreshToken);
+
+        return tokens;
+    }
+
+    public Claims getClaims(String token) {
+        return (Claims) Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parse(token)
+                .getPayload();
+    }
+
+    public boolean checkValidationToken(String token) {
+        try {
+            getClaims(token);
+        } catch (ExpiredJwtException e) {
+            throw e;
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public Authentication getAuthentication(String token) {
+        String uuid = (String) getClaims(token).get(UUID);
+        UserDetails user = userDetailService.loadUserByUsername(uuid);
+        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+    }
+
+    public Tokens createAndSaveTokens(String userUUID) {
+        Tokens tokens = createToken(userUUID);
+        redisService.setValuesWithTimeout(tokens.getRefreshToken(), userUUID, REFRESH_TOKEN_VALID_TIME);
+
+        return tokens;
+    }
+
+//    @Transactional
+//    public Tokens reissueToken(String accessToken, String refreshToken) {
+//        String accessUuid = null;
+//
+//        try {
+//            accessUuid = (String) getClaims(accessToken).get(UUID);
+//        } catch (ExpiredJwtException e) {
+//            accessUuid = String.valueOf(e.getClaims().get(UUID));
+//        }
+//
+//        try {
+//            getClaims(refreshToken);
+//
+//            String value = redisService.getValues(refreshToken)
+//                    .orElseThrow(() -> new GeneralException(Code.INVALID_REFRESH_TOKEN));
+//
+//            if(!value.equals(accessUuid)) {
+//                throw new GeneralException(Code.INVALID_REFRESH_TOKEN);
+//            }
+//
+//            // 기존 refresh token 삭제 후 재생성
+//            redisService.deleteValues(refreshToken);
+//            Tokens newTokens = createAndSaveTokens(value);
+//
+//            return newTokens;
+//        } catch (ExpiredJwtException e) {
+//            throw new GeneralException(Code.EXPIRED_REFRESH_TOKEN);
+//        }
+//    }
+//
+//    public void matchCheckTokens(java.util.UUID uuid, String refreshToken) {
+//        try {
+//            String refreshUuid = (String) getClaims(refreshToken).get(UUID);
+//
+//            if(!refreshUuid.equals(String.valueOf(uuid))) {
+//                throw new GeneralException(Code.NO_MATCH_TOKENS);
+//            }
+//        } catch (ExpiredJwtException e) {
+//            throw new GeneralException(Code.EXPIRED_REFRESH_TOKEN);
+//        }
+//    }
+}
