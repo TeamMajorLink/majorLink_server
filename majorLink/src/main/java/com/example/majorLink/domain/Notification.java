@@ -28,5 +28,4 @@ public class Notification extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'UNCHECK'")
     private CheckStatus status;
-
 }

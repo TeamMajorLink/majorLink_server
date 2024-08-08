@@ -4,6 +4,7 @@ import com.example.majorLink.domain.enums.Gender;
 import com.example.majorLink.domain.enums.LearnPart;
 import com.example.majorLink.domain.enums.UserStatus;
 import com.example.majorLink.domain.enums.Role;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -92,4 +93,5 @@ public class User extends BaseEntity{
     public void updateGender(Gender gender) {
         this.gender = gender;
     }
+
 }
