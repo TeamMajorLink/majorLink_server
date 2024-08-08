@@ -73,7 +73,4 @@ public class Lecture extends BaseEntity{
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarkList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new ArrayList<>();
 }

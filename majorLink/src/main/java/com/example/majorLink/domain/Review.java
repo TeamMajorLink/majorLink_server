@@ -26,25 +26,19 @@ public class Review extends BaseEntity{
     private int rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecture_id")
+    @JoinColumn(name = "lecture_id", nullable = false)
     private Lecture lecture;
 
     public void setUser(User user){
-        if(this.user != null)
-            user.getReviewList().remove(this);
         this.user = user;
-        user.getReviewList().add(this);
     }
 
     public void setLecture(Lecture lecture){
-        if(this.lecture != null)
-            lecture.getReviewList().remove(this);
         this.lecture = lecture;
-        lecture.getReviewList().add(this);
     }
 
     public void updateReview(String title, String content, int rate){
