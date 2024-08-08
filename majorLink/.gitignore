@@ -35,10 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
-.DS_Storegit
-majorLink/.DS_Store
 .DS_Store
 majorLink/.DS_Store
 .DS_Store
-
-config/secret
+majorLink/.DS_Store
+.DS_Store

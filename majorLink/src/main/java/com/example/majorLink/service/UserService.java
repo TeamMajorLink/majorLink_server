@@ -6,7 +6,6 @@ import com.example.majorLink.dto.request.SignUpRequest;
 import com.example.majorLink.dto.request.UpdateProfileRequest;
 import com.example.majorLink.dto.response.ProfileResponse;
 import com.example.majorLink.global.auth.Tokens;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService{
     Tokens signIn(SignInRequest request);

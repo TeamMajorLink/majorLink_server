@@ -1,6 +1,5 @@
 package com.example.majorLink.global.jwt;
 
-import com.example.majorLink.global.jwt.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

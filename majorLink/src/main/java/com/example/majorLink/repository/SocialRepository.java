@@ -1,7 +1,6 @@
 package com.example.majorLink.repository;
 
 import com.example.majorLink.domain.Social;
-import com.example.majorLink.domain.enums.SocialStatus;
 import com.example.majorLink.domain.enums.SocialType;
 import org.springframework.data.jpa.repository.JpaRepository;
 

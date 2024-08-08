@@ -2,19 +2,25 @@
 <project version="4">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> cec7928bb5ebca0ae18b3465905f45153ffabb99
+=======
+>>>>>>> fca5061d9e46de86e52bed210301fcf9a9b5b6fd
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/majorLink" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   <component name="ProjectRootManager">
 >>>>>>> develop
 =======
 >>>>>>> cec7928bb5ebca0ae18b3465905f45153ffabb99
+=======
+>>>>>>> fca5061d9e46de86e52bed210301fcf9a9b5b6fd
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
