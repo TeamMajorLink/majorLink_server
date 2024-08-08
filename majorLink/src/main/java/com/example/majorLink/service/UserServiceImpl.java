@@ -5,8 +5,8 @@ import com.example.majorLink.domain.User;
 import com.example.majorLink.domain.enums.*;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
+import com.example.majorLink.dto.request.UpdateProfileRequest;
 import com.example.majorLink.dto.response.ProfileResponse;
-import com.example.majorLink.global.auth.AuthTokensGenerator;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.auth.service.PasswordService;
 import com.example.majorLink.global.jwt.JwtConfig;
@@ -52,11 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Tokens signUp(SignUpRequest signUpRequest) {
-        socialService.loadUserInfo(signUpRequest.getProvider(), signUpRequest.getProviderId(), signUpRequest.getAccessToken());
+    public Tokens signUp(SignUpRequest request) {
+        socialService.loadUserInfo(request.getProvider(), request.getProviderId(), request.getAccessToken());
 
-        SocialType socialType = SocialType.valueOf(signUpRequest.getProvider());
-        Optional<Social> existingSocial = socialRepository.findBySocialTypeAndProviderId(socialType, signUpRequest.getProviderId());
+        SocialType socialType = SocialType.valueOf(request.getProvider());
+        Optional<Social> existingSocial = socialRepository.findBySocialTypeAndProviderId(socialType, request.getProviderId());
 
         User user = null;
         if (existingSocial.isPresent()) {
@@ -64,23 +64,23 @@ public class UserServiceImpl implements UserService {
             if (social.getSocialStatus() == SocialStatus.CONNECTED) {
                 throw new RuntimeException("이미 가입된 계정이 존재합니다.");
             } else if (social.getSocialStatus() == SocialStatus.WAITING_SIGN_UP) {
-                Gender gender = Gender.valueOf(signUpRequest.getGender().toUpperCase());
-                LearnPart learnPart = LearnPart.valueOf(signUpRequest.getLearnPart().toUpperCase());
+                Gender gender = Gender.valueOf(request.getGender().toUpperCase());
+                LearnPart learnPart = LearnPart.valueOf(request.getLearnPart().toUpperCase());
 
                 // 비밀 번호 암호화
-                String encryptedPassword = passwordService.encodePassword(signUpRequest.getPassword());
+                String encryptedPassword = passwordService.encodePassword(request.getPassword());
                 user = User.builder()
                         .id(UUID.randomUUID())
-                        .email(signUpRequest.getEmail())
-                        .username(signUpRequest.getUsername())
+                        .email(request.getEmail())
+                        .username(request.getUsername())
                         .password(encryptedPassword)
                         .gender(gender)
-                        .phone(signUpRequest.getPhone())
-                        .profileImage(signUpRequest.getProfileImg())
-                        .firstMajor(signUpRequest.getFirstMajor())
-                        .secondMajor(signUpRequest.getSecondMajor())
-                        .favorite(signUpRequest.getFavorite())
-                        .role(Role.valueOf(signUpRequest.getRole()))
+                        .phone(request.getPhone())
+                        .profileImage(request.getProfileImg())
+                        .firstMajor(request.getFirstMajor())
+                        .secondMajor(request.getSecondMajor())
+                        .favorite(request.getFavorite())
+                        .role(Role.valueOf(request.getRole()))
                         .learnPart(learnPart)
                         .build();
 
@@ -115,5 +115,37 @@ public class UserServiceImpl implements UserService {
                 .favorite(user.getFavorite())
                 .gender(user.getGender())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void modifyProfile(User user, UpdateProfileRequest request) {
+        if (request.getProfileImg() != null) {
+            user.updateProfileImg(request.getProfileImg());
+        }
+        if (request.getUsername() != null) {
+            user.updateUsername(request.getUsername());
+        }
+        if (request.getEmail() != null) {
+            user.updateEmail(request.getEmail());
+        }
+        if (request.getPassword() != null) {        // 암호화 후 비밀번호 변경
+            String encryptedPassword = passwordService.encodePassword(request.getPassword());
+            user.updatePassword(encryptedPassword);
+        }
+        if (request.getFirstMajor() != null) {
+            user.updateFirstMajor(request.getFirstMajor());
+        }
+        if (request.getSecondMajor() != null) {
+            user.updateSecondMajor(request.getSecondMajor());
+        }
+        if (request.getFavorite() != null) {
+            user.updateFavorite(request.getFavorite());
+        }
+        if (request.getGender() != null) {
+            user.updateGender(request.getGender());
+        }
+
+        userRepository.save(user);
     }
 }

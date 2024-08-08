@@ -1,9 +1,10 @@
 package com.example.majorLink.controller;
 
+import com.example.majorLink.domain.User;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
+import com.example.majorLink.dto.request.UpdateProfileRequest;
 import com.example.majorLink.dto.response.ProfileResponse;
-import com.example.majorLink.global.auth.AuthTokens;
 import com.example.majorLink.global.auth.AuthUser;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.oauth2.OAuthLoginService;
@@ -15,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -76,6 +75,25 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(profileResponse);
+    }
+
+    /**
+     * 마이페이지 수정 API
+     * [PATCH] /users/profile
+     * @param authUser
+     * @param updateProfileRequest
+     * @return
+     */
+    @PatchMapping("/profile")
+    public ResponseEntity<?> modifyProfile(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestBody UpdateProfileRequest updateProfileRequest) {
+        User user = authUser.getUser();
+        userService.modifyProfile(user, updateProfileRequest);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+
     }
 
 }
