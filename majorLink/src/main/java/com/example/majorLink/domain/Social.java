@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Social extends BaseEntity{
+public class Social extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,7 @@ public class Social extends BaseEntity{
     public void updateSocialStatus(SocialStatus socialStatus) {
         this.socialStatus = SocialStatus.CONNECTED;
     }
+
     public void updateUser(User user) {
         this.user = user;
     }
