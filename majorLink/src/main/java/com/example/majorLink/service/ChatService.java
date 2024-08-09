@@ -2,6 +2,7 @@ package com.example.majorLink.service;
 
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
+import com.example.majorLink.domain.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,8 +18,9 @@ public interface ChatService {
     //채팅방 목록 조회
     List<ChatRoom> getChatroomListById(Long userId);
 
-    //채팅방 내의 유저 닉네임 전체 조회
-    List<String> getChatroomUsernameById(Long roodId);
+
+    //채팅방 내의 유저 전체 조회
+    List<User> getUserById(Long roomId);
 
     //채팅방 생성
     ChatRoom createChatroom(String roomName);
@@ -30,4 +32,6 @@ public interface ChatService {
 
     //채팅방 전체조회
     List<ChatRoom> getAllChatRoom();
+
+
 }

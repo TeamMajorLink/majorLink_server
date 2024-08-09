@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -47,18 +48,6 @@ public class ChatServiceImpl implements ChatService{
         return chatMessageRepository.findByChatRoomId(roomId);
     }
 
-//    @Override
-//    public List<ChatmessageResponseDTO> getChatMessageById(Long roomId) {
-//        return chatMessageRepository.findByChatRoomId(roomId).stream()
-//                .map(chatMessage -> ChatMessageResponseDTO.builder()
-//                        .id(chatMessage.getId())
-//                        .content(chatMessage.getContent())
-//                        .senderUsername(chatMessage.getUser().getUsername()) // 필요한 정보 추가
-//                        .chatRoomId(chatMessage.getChatRoom().getId())
-//                        .build())
-//                .toList();
-//    }
-
 
     //채팅방 전체 조회
     @Override
@@ -66,10 +55,15 @@ public class ChatServiceImpl implements ChatService{
         return chatRoomRepository.findAll();
     }
 
+    //채팅방 내의 유저 전체 조회
     @Override
-    public List<String> getChatroomUsernameById(Long roodId) {
-        return null;
+    public List<User> getUserById(Long roomId) {
+        return userChatRepository.findByChatRoomId(roomId).stream()
+                .map(UserChat::getUser) //Userchat에서 user 추출
+                .collect(Collectors.toList()); //List<User>로 변환
     }
+
+
 
 
     //채팅방 생성

@@ -3,10 +3,7 @@ package com.example.majorLink.controller;
 
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
-import com.example.majorLink.dto.ChatRoomRequestDTO;
-import com.example.majorLink.dto.ChatRoomResponseDTO;
-import com.example.majorLink.dto.ChatjoinRequestDTO;
-import com.example.majorLink.dto.ChatmessageResponseDTO;
+import com.example.majorLink.dto.*;
 import com.example.majorLink.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -91,9 +88,20 @@ public class ChatController {
                 .toList();
     }
 
+    //채팅방 입장 컨트롤러
     @PostMapping("/chat/join")
     public String joinRoom(@RequestBody ChatjoinRequestDTO chatjoinRequestDTO) {
         return chatService.joinRoom(chatjoinRequestDTO.getRoomId(), chatjoinRequestDTO.getUserId());
+    }
+
+    //채팅방별 입장한 유저 조회
+    @GetMapping("/chatroom/user/{roomId}")
+    public List<ChatroomUserListDTO> getUserList(@PathVariable Long roomId) {
+        return chatService.getUserById(roomId).stream().map(user -> ChatroomUserListDTO.builder()
+                .userId(user.getId())
+                .userName(user.getUsername())
+                .build())
+                .toList();
     }
 
 

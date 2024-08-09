@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class ChatjoinRequestDTO {
-    private Long roomId;
+public class ChatroomUserListDTO {
     private UUID userId;
+    private String userName;
 }
