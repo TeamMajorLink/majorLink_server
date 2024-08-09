@@ -2,6 +2,7 @@ package com.example.majorLink.service.ReviewService;
 
 import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.Review;
+import com.example.majorLink.domain.User;
 import com.example.majorLink.dto.request.ReviewRequestDTO;
 import com.example.majorLink.repository.LectureRepository;
 import com.example.majorLink.repository.ReviewRepository;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -23,7 +26,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     // 리뷰 생성
     @Override
-    public Review createReview(Long userId, Long lectureId, ReviewRequestDTO request) {
+    public Review createReview(UUID userId, Long lectureId, ReviewRequestDTO request) {
         Review review = Review.builder()
                 .title(request.getTitle())
                 .rate(request.getRate())

@@ -1,13 +1,17 @@
 package com.example.majorLink.controller;
 
 import com.example.majorLink.domain.Review;
+import com.example.majorLink.domain.User;
 import com.example.majorLink.dto.request.ReviewRequestDTO;
 import com.example.majorLink.dto.response.ReviewResponseDTO;
+import com.example.majorLink.global.auth.AuthUser;
 import com.example.majorLink.service.ReviewService.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,8 +26,9 @@ public class ReviewController {
     @ResponseBody
     public ReviewResponseDTO.CreateReview createReview(@RequestBody ReviewRequestDTO request,
                                                        @PathVariable(name = "lectureId") Long lectureId,
-                                                       @RequestParam(name = "userId") Long userId){
-        Review review = reviewService.createReview(userId, lectureId, request);
+                                                       @AuthenticationPrincipal AuthUser authUser){
+        User user = authUser.getUser();
+        Review review = reviewService.createReview(user.getId(), lectureId, request);
 
         return ReviewResponseDTO.CreateReview.builder()
                 .reviewId(review.getId())
@@ -54,6 +59,7 @@ public class ReviewController {
     // 리뷰 조회하는 api
     @GetMapping("/{lectureId}/reviews")
     @ResponseBody
+    // 스웨거 세팅 후 파라미터 등 설명 추가
     public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
                                                           @RequestParam(name = "page") Integer page){
         Page<Review> reviewList = reviewService.getReviewList(lectureId, page-1);
@@ -61,7 +67,7 @@ public class ReviewController {
         return ReviewResponseDTO.ReviewPreViewList.builder()
                 .reviewList(reviewList.stream()
                         .map(review -> ReviewResponseDTO.ReviewPreView.builder()
-                                .ownerNickname(review.getUser().getUserName())
+                                .ownerNickname(review.getUser().getUsername())
                                 .rate(review.getRate())
                                 .content(review.getContent())
                                 .createdAt(review.getCreatedAt())
