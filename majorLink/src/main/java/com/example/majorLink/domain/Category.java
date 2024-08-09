@@ -20,9 +20,9 @@ public class Category extends BaseEntity{
     @Column(nullable = false, length = 40)
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Tag> tagList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Lecture> lectureList = new ArrayList<>();
+    private List<Lecture> lectureList = new ArrayList<>();*/
 }
