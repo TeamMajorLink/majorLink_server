@@ -3,6 +3,8 @@ package com.example.majorLink.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -24,10 +26,24 @@ public class Review extends BaseEntity{
     private int rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecture_id")
+    @JoinColumn(name = "lecture_id", nullable = false)
     private Lecture lecture;
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public void setLecture(Lecture lecture){
+        this.lecture = lecture;
+    }
+
+    public void updateReview(String title, String content, int rate){
+        this.title = title;
+        this.content = content;
+        this.rate = rate;
+    }
 }
