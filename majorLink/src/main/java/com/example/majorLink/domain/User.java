@@ -2,16 +2,14 @@ package com.example.majorLink.domain;
 
 import com.example.majorLink.domain.enums.Gender;
 import com.example.majorLink.domain.enums.LearnPart;
-import com.example.majorLink.domain.enums.MemberStatus;
+import com.example.majorLink.domain.enums.UserStatus;
 import com.example.majorLink.domain.enums.Role;
-import com.example.majorLink.domain.mapping.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,11 +21,12 @@ import java.util.List;
 public class User extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
-    @Column(nullable = false, length = 20)
-    private String userName;
+    @Column(name = "username", nullable = false, length = 20)
+    private String username;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10)")
@@ -36,54 +35,37 @@ public class User extends BaseEntity{
     @Column(nullable = false, length = 40)
     private String email;
 
-    @Column(nullable = false, length = 40)
+    @Column(name = "phone", length = 40)
     private String phone;
 
-    @Column(nullable = false, length = 40)
+    @Column(name = "profileImage")
+    private String profileImage;
+
+    @Column(name = "firstMajor", nullable = false, length = 40)
     private String firstMajor;
 
-    @Column(length = 40)
+    @Column(name = "secondMajor", length = 40)
     private String secondMajor;
 
     @Column(length = 40)
     private String favorite;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'TUTEE'")
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
     private LearnPart learnPart;
 
-    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Column(nullable = false,  columnDefinition = "INT DEFAULT 0")
     private Integer point;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
-    private MemberStatus status;
+    @Column(name = "userStatus", columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
+    private UserStatus userStatus;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserImage profileImg;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Social social;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private ProfileCard profileCard;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserNotification> userNotificationList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserLecture> userLectureList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Liked> likedList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserChat> chatList = new ArrayList<>();
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }

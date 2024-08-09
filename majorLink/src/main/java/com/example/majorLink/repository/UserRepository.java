@@ -1,7 +1,14 @@
 package com.example.majorLink.repository;
 
 import com.example.majorLink.domain.User;
+import com.example.majorLink.domain.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByIdAndUserStatusIs(UUID uuid, UserStatus status);
 }
