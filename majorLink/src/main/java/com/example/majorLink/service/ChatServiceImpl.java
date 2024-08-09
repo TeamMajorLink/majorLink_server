@@ -3,14 +3,15 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 import com.example.majorLink.domain.User;
-import com.example.majorLink.domain.mapping.UserChat;
 import com.example.majorLink.repository.ChatMessageRepository;
 import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.repository.UserChatRepository;
+import com.example.majorLink.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -19,16 +20,23 @@ public class ChatServiceImpl implements ChatService{
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserChatRepository userChatRepository;
+    private final UserRepository userRepository;
 
 
     //메세지 저장
     @Override
-    public ChatMessage saveChatMessage(ChatMessage chatMessage, Long sender) {
-        //아직 유저 레포지토리 없어서 임시 작성
-        //User user = userRepository.findById(sender).orElseThroew 예외처리
-        //chatMessage.setUser(user);
-        //return chatMessageRepository.save(chatMessage);
-        return null;
+    public ChatMessage saveChatMessage(ChatMessage chatMessage, UUID sender) {
+        User user = userRepository.findById(sender).orElseThrow(() -> new RuntimeException("존재하지않는 유저입니다")); //예외처리 부분 추후 수정
+        // 로그 추가
+        System.out.println("User found: " + user);
+
+        chatMessage.setUser(user);
+
+        // 로그 추가
+        System.out.println("Saving chat message: " + chatMessage);
+
+
+        return chatMessageRepository.save(chatMessage);
 
     }
 

@@ -4,11 +4,12 @@ import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ChatService {
 
     //메세지 저장
-    ChatMessage saveChatMessage(ChatMessage chatMessage, Long sender);
+    ChatMessage saveChatMessage(ChatMessage chatMessage, UUID sender);
 
     //채팅방 메세지 전체 조회
     List<ChatMessage> getChatMessageById(Long roomId);
