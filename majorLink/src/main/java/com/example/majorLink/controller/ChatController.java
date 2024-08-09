@@ -5,15 +5,14 @@ import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 import com.example.majorLink.dto.ChatRoomRequestDTO;
 import com.example.majorLink.dto.ChatRoomResponseDTO;
+import com.example.majorLink.dto.ChatjoinRequestDTO;
 import com.example.majorLink.dto.ChatmessageResponseDTO;
-import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +89,11 @@ public class ChatController {
                 .chatroomId(chatMessage.getChatRoom().getId())
                 .build())
                 .toList();
+    }
+
+    @PostMapping("/chat/join")
+    public String joinRoom(@RequestBody ChatjoinRequestDTO chatjoinRequestDTO) {
+        return chatService.joinRoom(chatjoinRequestDTO.getRoomId(), chatjoinRequestDTO.getUserId());
     }
 
 

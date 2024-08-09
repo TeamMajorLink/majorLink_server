@@ -3,7 +3,7 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 import com.example.majorLink.domain.User;
-import com.example.majorLink.dto.ChatmessageResponseDTO;
+import com.example.majorLink.domain.mapping.UserChat;
 import com.example.majorLink.repository.ChatMessageRepository;
 import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.repository.UserChatRepository;
@@ -83,14 +83,16 @@ public class ChatServiceImpl implements ChatService{
 
 
     //채팅방 입장
-    @Override
-    public Long joinRoom(Long roomId, Long userId) {
-        //아직 유저 레포지토리 없어서 임시작성
-//        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("찾는 채팅방이 없습니다"));
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("찾는 유저가 없습니다"));
-//        UserChat userChat = UserChat.builder().chatRoom(chatRoom).user(user).build();
-//        return userChat.getUser().getId();
-        return null;
+    public String joinRoom(Long roomId, UUID userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("존재하지 않는 유저 입니다"));
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("존재하지 않는 채팅방입니다"));
+        UserChat userChat = UserChat.builder()
+                .user(user)
+                .chatRoom(chatRoom)
+                .build();
+        userChatRepository.save(userChat);
+        return userChat.getUser().getUsername()+ "님이" + userChat.getChatRoom().getId() + "방에 입장하셨습니다";
+
     }
 
     @Override

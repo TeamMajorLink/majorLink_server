@@ -24,7 +24,7 @@ public interface ChatService {
     ChatRoom createChatroom(String roomName);
 
     //채팅방 입장
-    Long joinRoom(Long roomId, Long userId);
+    String joinRoom(Long roomId, UUID userId);
 
     ChatRoom getChatroomById(Long roomId);
 
