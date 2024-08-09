@@ -5,6 +5,7 @@ import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 import com.example.majorLink.dto.ChatRoomRequestDTO;
 import com.example.majorLink.dto.ChatRoomResponseDTO;
+import com.example.majorLink.dto.ChatmessageResponseDTO;
 import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.service.ChatService;
 import lombok.AllArgsConstructor;
@@ -81,9 +82,17 @@ public class ChatController {
 
     //채팅 기록 조회 컨트롤러
     @GetMapping("/chat/history/{roomId}")
-    public List<ChatMessage> getChatHistory(@PathVariable Long roomId) {
-        return chatService.getChatMessageById(roomId);
+    public List<ChatmessageResponseDTO> getChatHistory(@PathVariable Long roomId) {
+        return chatService.getChatMessageById(roomId).stream().map(chatMessage -> ChatmessageResponseDTO.builder()
+                .id(chatMessage.getId())
+                .senderUsername(chatMessage.getSender().getUsername())
+                .content(chatMessage.getContent())
+                .chatroomId(chatMessage.getChatRoom().getId())
+                .build())
+                .toList();
     }
+
+
 
 
 

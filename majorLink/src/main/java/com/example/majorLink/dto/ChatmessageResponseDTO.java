@@ -5,10 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatRoomRequestDTO {
-    private String name;
+public class ChatmessageResponseDTO {
+        private Long id;
+        private String content;
+        private String senderUsername;
+        private Long chatroomId;
+
 }

@@ -3,6 +3,7 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.ChatMessage;
 import com.example.majorLink.domain.ChatRoom;
 import com.example.majorLink.domain.User;
+import com.example.majorLink.dto.ChatmessageResponseDTO;
 import com.example.majorLink.repository.ChatMessageRepository;
 import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.repository.UserChatRepository;
@@ -45,6 +46,18 @@ public class ChatServiceImpl implements ChatService{
     public List<ChatMessage> getChatMessageById(Long roomId) {
         return chatMessageRepository.findByChatRoomId(roomId);
     }
+
+//    @Override
+//    public List<ChatmessageResponseDTO> getChatMessageById(Long roomId) {
+//        return chatMessageRepository.findByChatRoomId(roomId).stream()
+//                .map(chatMessage -> ChatMessageResponseDTO.builder()
+//                        .id(chatMessage.getId())
+//                        .content(chatMessage.getContent())
+//                        .senderUsername(chatMessage.getUser().getUsername()) // 필요한 정보 추가
+//                        .chatRoomId(chatMessage.getChatRoom().getId())
+//                        .build())
+//                .toList();
+//    }
 
 
     //채팅방 전체 조회
