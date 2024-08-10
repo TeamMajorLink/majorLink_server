@@ -1,5 +1,6 @@
 package com.example.majorLink.apiPayload;
 
+import com.example.majorLink.apiPayload.code.BaseCode;
 import com.example.majorLink.apiPayload.code.status.SuccessStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +24,16 @@ public class BaseResponse<T> {
 
     //성공한 경우
     public static <T> BaseResponse<T> onSuccess(T result) {
-        return new BaseResponse<>(true, SuccessStatus._OK.getCode(), SuccessStatus._CREATE.getMessage(), T);
+        return new BaseResponse<>(true, SuccessStatus._OK.getCode(), SuccessStatus._CREATE.getMessage(), result);
 
+    }
+
+    public static <T> BaseResponse<T> of(BaseCode code, T result) {
+        return new BaseResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
+    }
+
+    //실패한 경우 응답 생성
+    public static <T> BaseResponse<T> onFailure(String code, String message, T data) {
+        return new BaseResponse<>(false, code, message, data);
     }
 }
