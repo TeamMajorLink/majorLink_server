@@ -46,7 +46,7 @@ public class ChatController {
         Map<String, Object> result = new HashMap<>();
 
         result.put("id", chat.getId());
-        result.put("name", chat.getSender().getUserName());
+        result.put("name", chat.getSender().getUsername());
         result.put("content", chat.getContent());
         result.put("chatroom_id", chat.getChatRoom().getId());
         return result;

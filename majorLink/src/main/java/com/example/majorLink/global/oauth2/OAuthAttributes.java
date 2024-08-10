@@ -45,7 +45,7 @@ public class OAuthAttributes {
 
         if ("F".equals(gender)) {
             oAuthAttributes.gender = Gender.FEMALE;
-        } else if ("M".equals(gender)){
+        } else if ("M".equals(gender)) {
             oAuthAttributes.gender = Gender.MALE;
         }
 
