@@ -65,15 +65,12 @@ public class Lecture extends BaseEntity{
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
     private List<UserLecture> userLectureList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
     private List<Liked> likedList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new ArrayList<>();
+    private List<Bookmark> bookmarkList = new ArrayList<>();*/
 }

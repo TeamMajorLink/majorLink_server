@@ -24,6 +24,6 @@ public class Tag extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
-    private List<Lecture> lectureList = new ArrayList<>();
+    /*@OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    private List<Lecture> lectureList = new ArrayList<>();*/
 }
