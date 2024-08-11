@@ -1,6 +1,7 @@
 package com.example.majorLink.dto.response;
 
 import com.example.majorLink.domain.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,9 @@ public class MyPageResponse {
     private String username;
     private String email;
     private String firstMajor;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String secondMajor;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String favorite;
     private Gender gender;
     private Integer point;
