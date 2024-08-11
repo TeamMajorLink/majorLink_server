@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.majorLink.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.majorLink.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/majorLink.main.iml" filepath="$PROJECT_DIR$/.idea/modules/majorLink.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/majorLink.test.iml" filepath="$PROJECT_DIR$/.idea/modules/majorLink.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/majorLink_server.iml" filepath="$PROJECT_DIR$/.idea/majorLink_server.iml" />
     </modules>
   </component>

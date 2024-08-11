@@ -5,8 +5,8 @@ import com.example.majorLink.domain.User;
 import com.example.majorLink.domain.enums.*;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
-import com.example.majorLink.dto.request.UpdateProfileRequest;
-import com.example.majorLink.dto.response.ProfileResponse;
+import com.example.majorLink.dto.request.UpdateMyPageRequest;
+import com.example.majorLink.dto.response.MyPageResponse;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.auth.service.PasswordService;
 import com.example.majorLink.global.jwt.JwtConfig;
@@ -105,8 +105,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponse getProfile(User user) {
-        return ProfileResponse.builder()
+    public MyPageResponse getMyPage(User user) {
+        return MyPageResponse.builder()
                 .profileImg(user.getProfileImage())
                 .username(user.getUsername())
                 .email(user.getEmail())
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void modifyProfile(User user, UpdateProfileRequest request) {
+    public void modifyMyPage(User user, UpdateMyPageRequest request) {
         if (request.getProfileImg() != null) {
             user.updateProfileImg(request.getProfileImg());
         }
