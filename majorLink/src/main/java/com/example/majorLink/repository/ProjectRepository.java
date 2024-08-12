@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByUser(User user);
-    List<Project> findByNickname(String nickname);
+    List<Project> findByUserNickname(String nickname);
 }

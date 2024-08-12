@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService{
             } else if (social.getSocialStatus() == SocialStatus.WAITING_SIGN_UP) {
                 Gender gender = Gender.valueOf(request.getGender().toUpperCase());
                 LearnPart learnPart = LearnPart.valueOf(request.getLearnPart().toUpperCase());
+                userRepository.findByNickname(request.getNickname())
+                        .ifPresent(nickname -> {
+                            throw new RuntimeException("이미 존재하는 닉네임입니다.");
+                        }
+                );
 
                 // 비밀 번호 암호화
                 String encryptedPassword = passwordService.encodePassword(request.getPassword());
@@ -132,6 +137,11 @@ public class UserServiceImpl implements UserService{
             user.updateUsername(request.getUsername());
         }
         if (request.getNickname() != null) {
+            userRepository.findByNickname(request.getNickname())
+                    .ifPresent(nickname -> {
+                                throw new RuntimeException("이미 존재하는 닉네임입니다.");
+                            }
+                    );
             user.updateNickname(request.getNickname());
         }
         if (request.getBirth() != null) {

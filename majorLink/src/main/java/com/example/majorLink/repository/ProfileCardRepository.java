@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface ProfileCardRepository extends JpaRepository<ProfileCard, Long> {
     Optional<ProfileCard> findByUser(User user);
-    Optional<ProfileCard> findByNickname(String nickname);
+    Optional<ProfileCard> findByUserNickname(String nickname);
 }

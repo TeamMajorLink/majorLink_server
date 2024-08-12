@@ -232,11 +232,12 @@ public class ProfileCardServiceImpl implements ProfileCardService{
             educations = educationRepository.findByUser(user);
             projects = projectRepository.findByUser(user);
         } else {
-            profileCard = profileCardRepository.findByNickname(nickname)
-                    .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));     // 동명이인 문제로 username으로 구분 불가(userId로 구분)
-            educations = educationRepository.findByNickname(nickname);
-            projects = projectRepository.findByNickname(nickname);
-            user = userRepository.findByNickname(nickname);
+            profileCard = profileCardRepository.findByUserNickname(nickname)
+                    .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));   
+            educations = educationRepository.findByUserNickname(nickname);
+            projects = projectRepository.findByUserNickname(nickname);
+            user = userRepository.findByNickname(nickname)
+                    .orElseThrow(() -> new RuntimeException("해당 유저는 중복 닉네임을 가지고 있습니다."));
         }
 
         return ProfileCardResponse.builder()
