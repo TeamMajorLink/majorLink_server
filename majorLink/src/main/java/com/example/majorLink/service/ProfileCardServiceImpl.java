@@ -100,6 +100,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
 
 
     }
+    // 상위 메서드에서 트랜잭션 처리 중임으로 추가 X
     private void updateEducations(User user, List<EducationRequest> educations) {
         if (educations == null) {
             throw new RuntimeException("교육 정보가 없습니다.");
@@ -180,6 +181,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
                 project.updateStart(request.getStart());
                 project.updateEnd(request.getEnd());
                 project.updateCheckStatus(request.getCheckStatus() ? CheckStatus.CHECK: CheckStatus.UNCHECK);
+                project.updateProjectDescript(request.getProjectDescript());
             } else {
                 // id가 없고, 기존 기록에 없다면 새롭게 교육 생성
                 project = Project.builder()
