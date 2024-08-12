@@ -20,7 +20,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    //    private final AuthTokensGenerator authTokensGenerator;
     private final OAuthLoginService oAuthService;
     private final JwtService jwtService;
     @Value("${default.login.redirect.url}")

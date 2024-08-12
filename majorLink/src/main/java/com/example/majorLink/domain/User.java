@@ -4,6 +4,7 @@ import com.example.majorLink.domain.enums.Gender;
 import com.example.majorLink.domain.enums.LearnPart;
 import com.example.majorLink.domain.enums.UserStatus;
 import com.example.majorLink.domain.enums.Role;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -27,6 +28,9 @@ public class User extends BaseEntity{
 
     @Column(name = "username", nullable = false, length = 20)
     private String username;
+
+    @Column(nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10)")
@@ -65,7 +69,28 @@ public class User extends BaseEntity{
     @Column(name = "userStatus", columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
     private UserStatus userStatus;
 
+    public void updateProfileImg(String profileImage) {
+        this.profileImage = profileImage;
+    }
+    public void updateUsername(String username) {
+        this.username = username;
+    }
     public void updateEmail(String email) {
         this.email = email;
+    }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+    public void updateFirstMajor(String firstMajor) {
+        this.firstMajor = firstMajor;
+    }
+    public void updateSecondMajor(String secondMajor) {
+        this.secondMajor = secondMajor;
+    }
+    public void updateFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+    public void updateGender(Gender gender) {
+        this.gender = gender;
     }
 }
