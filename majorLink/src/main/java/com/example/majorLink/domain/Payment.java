@@ -21,10 +21,6 @@ public class Payment extends BaseEntity{
     @Column(nullable = false)
     private BigDecimal amount;
 
-    // 결제 고유번호
-    @Column(nullable = false)
-    private String impUid;
-
     // 주문 고유번호
     @Column(nullable = false)
     private String merchantUid;
@@ -40,10 +36,5 @@ public class Payment extends BaseEntity{
 
     public void updatePaymentStatus(PaymentStatus newStatus) {
         this.paymentStatus = newStatus;
-    }
-
-    public void completePayment(PaymentStatus newStatus, String impUid) {
-        this.paymentStatus = newStatus;
-        this.impUid = impUid;
     }
 }
