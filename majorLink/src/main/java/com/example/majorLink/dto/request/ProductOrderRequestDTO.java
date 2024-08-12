@@ -1,5 +1,6 @@
 package com.example.majorLink.dto.request;
 
+import com.example.majorLink.domain.enums.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ProductOrderRequestDTO {
 
-    private String merchantUid;
+    private Product product;
     private BigDecimal amount;
 }

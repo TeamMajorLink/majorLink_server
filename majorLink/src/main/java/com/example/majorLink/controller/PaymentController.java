@@ -20,7 +20,7 @@ import java.io.IOException;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-//@RequestMapping("/payment")
+@RequestMapping("/payment")
 public class PaymentController {
 
     private final PaymentServiceImpl paymentService;

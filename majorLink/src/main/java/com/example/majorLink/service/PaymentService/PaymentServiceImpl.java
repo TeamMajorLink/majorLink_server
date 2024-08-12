@@ -18,7 +18,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     private IamportClient iamportClient;
 
-    @Value("${iamport.api_key")
+    @Value("${iamport.api_key}")
     private String apiKey;
 
     @Value("${iamport.api_secret}")
@@ -40,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @PostConstruct
     public void init() {
-        this.iamportClient = new IamportClient(apiKey, apiSecret);
+        iamportClient = new IamportClient(apiKey, apiSecret);
     }
 
     private final UserRepository userRepository;
@@ -55,29 +54,33 @@ public class PaymentServiceImpl implements PaymentService{
         String merchantUid = user.getId().toString() + "_" + System.currentTimeMillis();
         BigDecimal amount = request.getAmount();
 
+        ProductOrder productOrder = ProductOrder.builder()
+                .product(request.getProduct())
+                .amount(amount)
+                .user(user)
+                .merchantUid(merchantUid)
+                .build();
+
         PrepareData prepareData = new PrepareData(merchantUid, amount);
 
         iamportClient.postPrepare(prepareData);
-
-        Payment payment = Payment.builder()
-                        .user(user)
-                        .merchantUid(merchantUid)
-                        .amount(amount)
-                        .paymentStatus(PaymentStatus.READY)
-                        .build();
-
-        paymentRepository.save(payment);
-
-        ProductOrder productOrder = ProductOrder.builder()
-                                .user(user)
-                                .merchantUid(merchantUid)
-                                .build();
 
         return productOrderRepository.save(productOrder);
     }
 
     // 결제 검증
     public Boolean validatePayment(PaymentRequestDTO request) throws IamportResponseException, IOException {
+
+        /*Payment payment = Payment.builder()
+                .impUid(impUid)
+                .user(user)
+                .merchantUid(merchantUid)
+                .amount(amount)
+                .paymentStatus(PaymentStatus.READY)
+                .build();
+
+        paymentRepository.save(payment);*/
+
         Payment payment = paymentRepository.findByMerchantUid(request.getMerchantUid()).get();
 
         // 이미 결제된 주문인지 확인
