@@ -59,19 +59,19 @@ public class ProfileCardController {
      * 프로필 카드 조회 API
      * [GET] /profile-card?userId={userId}
      * @param authUser
-     * @param userId
+     * @param nickname
      * @return
      */
     @GetMapping
     public ResponseEntity<ProfileCardResponse> getProfileCard(
             @AuthenticationPrincipal AuthUser authUser,
-            @RequestParam(name = "userId", required = false) UUID userId        // userId가 빈 경우를 대비해 쿼리 파라미터 사용
+            @RequestParam(name = "nickname", required = false) String nickname        // nickname이 빈 경우를 대비해 쿼리 파라미터 사용
     ) {
         User user = null;
         if (authUser != null) {
             user = authUser.getUser();
         }
-        ProfileCardResponse profileCardResponse = profileCardService.getProfileCard(user, userId);
+        ProfileCardResponse profileCardResponse = profileCardService.getProfileCard(user, nickname);
         return ResponseEntity.ok()
                 .body(profileCardResponse);
     }

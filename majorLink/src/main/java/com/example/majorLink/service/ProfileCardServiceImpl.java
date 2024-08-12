@@ -14,6 +14,7 @@ import com.example.majorLink.dto.response.ProjectResponse;
 import com.example.majorLink.repository.EducationRepository;
 import com.example.majorLink.repository.ProfileCardRepository;
 import com.example.majorLink.repository.ProjectRepository;
+import com.example.majorLink.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
     private final ProfileCardRepository profileCardRepository;
     private final EducationRepository educationRepository;
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -218,7 +220,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
 
     @Override
     @Transactional(readOnly = true)
-    public ProfileCardResponse getProfileCard(User user, UUID userId) {
+    public ProfileCardResponse getProfileCard(User user, String nickname) {
         ProfileCard profileCard;
         List<Education> educations;
         List<Project> projects;
@@ -230,13 +232,16 @@ public class ProfileCardServiceImpl implements ProfileCardService{
             educations = educationRepository.findByUser(user);
             projects = projectRepository.findByUser(user);
         } else {
-            profileCard = profileCardRepository.findByUserId(userId)
+            profileCard = profileCardRepository.findByNickname(nickname)
                     .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));     // 동명이인 문제로 username으로 구분 불가(userId로 구분)
-            educations = educationRepository.findByUserId(userId);
-            projects = projectRepository.findByUserId(userId);
+            educations = educationRepository.findByNickname(nickname);
+            projects = projectRepository.findByNickname(nickname);
+            user = userRepository.findByNickname(nickname);
         }
 
         return ProfileCardResponse.builder()
+                .nickname(user.getNickname())
+                .firstMajor(user.getFirstMajor())
                 .lineInfo(profileCard.getLineInfo())
                 .selfInfo(profileCard.getSelfInfo())
                 .educations(educations.stream()

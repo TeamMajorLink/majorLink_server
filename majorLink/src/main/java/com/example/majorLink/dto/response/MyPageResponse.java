@@ -12,6 +12,8 @@ import lombok.Getter;
 public class MyPageResponse {
     private String profileImg;
     private String username;
+    private String nickname;
+    private String birth;
     private String email;
     private String firstMajor;
     @JsonInclude(JsonInclude.Include.NON_NULL)

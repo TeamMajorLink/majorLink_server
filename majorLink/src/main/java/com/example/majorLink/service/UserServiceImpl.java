@@ -73,6 +73,8 @@ public class UserServiceImpl implements UserService{
                         .id(UUID.randomUUID())
                         .email(request.getEmail())
                         .username(request.getUsername())
+                        .nickname(request.getNickname())
+                        .birth(request.getBirth())
                         .password(encryptedPassword)
                         .gender(gender)
                         .phone(request.getPhone())
@@ -109,6 +111,8 @@ public class UserServiceImpl implements UserService{
         return MyPageResponse.builder()
                 .profileImg(user.getProfileImage())
                 .username(user.getUsername())
+                .nickname(user.getNickname())
+                .birth(user.getBirth())
                 .email(user.getEmail())
                 .firstMajor(user.getFirstMajor())
                 .secondMajor(user.getSecondMajor())
@@ -126,6 +130,12 @@ public class UserServiceImpl implements UserService{
         }
         if (request.getUsername() != null) {
             user.updateUsername(request.getUsername());
+        }
+        if (request.getNickname() != null) {
+            user.updateNickname(request.getNickname());
+        }
+        if (request.getBirth() != null) {
+            user.updateBirth(request.getBirth());
         }
         if (request.getEmail() != null) {
             user.updateEmail(request.getEmail());

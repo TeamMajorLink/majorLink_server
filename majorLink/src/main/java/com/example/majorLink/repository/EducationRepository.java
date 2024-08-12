@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
     List<Education> findByUser(User user);
-    List<Education> findByUserId(UUID userId);
+    List<Education> findByNickname(String nickname);
 }

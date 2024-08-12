@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface ProfileCardService {
     void createProfileCard(User user, ProfileCardRequest request);
     void modifyProfileCard(User user, ProfileCardRequest request);
-    ProfileCardResponse getProfileCard(User user, UUID id);
+    ProfileCardResponse getProfileCard(User user, String nickname);
 }

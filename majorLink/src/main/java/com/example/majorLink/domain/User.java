@@ -29,6 +29,11 @@ public class User extends BaseEntity{
     @Column(name = "username", nullable = false, length = 20)
     private String username;
 
+    @Column(nullable = false, length = 20)
+    private String nickname;
+    @Column(nullable = false, length = 8)
+    private String birth;
+
     @Column(nullable = false)
     private String password;
 
@@ -74,6 +79,12 @@ public class User extends BaseEntity{
     }
     public void updateUsername(String username) {
         this.username = username;
+    }
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void updateBirth(String birth) {
+        this.birth = birth;
     }
     public void updateEmail(String email) {
         this.email = email;
