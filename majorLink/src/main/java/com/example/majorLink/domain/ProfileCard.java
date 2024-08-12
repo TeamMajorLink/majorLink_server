@@ -21,19 +21,11 @@ public class ProfileCard extends BaseEntity{
     private String portfolio;
     private String link;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "profileCard_id")
-    private List<Education> educations = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "profileCard_id")
-    private List<Project> projects = new ArrayList<>();
-
-    // 스킬 종속 컬렉션 테잉블 생성
+    // 스킬 종속 컬렉션 테이블 생성
     @ElementCollection(fetch = FetchType.LAZY)
     @JoinTable(name = "skills")
     private List<String> skills = new ArrayList<>();
@@ -44,14 +36,11 @@ public class ProfileCard extends BaseEntity{
     public void updateSelfInfo(String selfInfo) {
         this.selfInfo = selfInfo;
     }
-    public void updateEducations(List<Education> education) {
-        this.educations = educations;
-    }
-    public void updateProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-    public void updateSkills(List<String> skill) {
-        this.skills = skills;
+    public void updateSkills(List<String> skills) {
+        this.skills.clear(); // 기존 기술 삭제
+        if (skills != null) {
+            this.skills.addAll(skills);
+        }
     }
     public void updatePortfolio(String portfolio) {
         this.portfolio = portfolio;
