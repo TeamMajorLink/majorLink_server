@@ -61,5 +61,5 @@ default:
 
 # 결제
 iamport:
-  apiKey: ${IMPORT_API_KEY}
-  apiSecret: ${IMPORT_API_SECRET}
+  api_key: ${IMPORT_API_KEY}
+  api_secret: ${IMPORT_API_SECRET}

@@ -14,8 +14,11 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.request.PrepareData;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,7 +30,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService{
 
-    private final IamportClient iamportClient;
+    private IamportClient iamportClient;
+
+    @Value("${iamport.api_key")
+    private String apiKey;
+
+    @Value("${iamport.api_secret}")
+    private String apiSecret;
+
+    @PostConstruct
+    public void init() {
+        this.iamportClient = new IamportClient(apiKey, apiSecret);
+    }
+
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
     private final ProductOrderRepository productOrderRepository;
@@ -66,7 +81,7 @@ public class PaymentServiceImpl implements PaymentService{
         Payment payment = paymentRepository.findByMerchantUid(request.getMerchantUid()).get();
 
         // 이미 결제된 주문인지 확인
-        if (paymentRepository.findByIamportUid(request.getImpUid()).isPresent()) {
+        if (paymentRepository.findByImpUid(request.getImpUid()).isPresent()) {
             return false;
         }
 
