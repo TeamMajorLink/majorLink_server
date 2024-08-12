@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService{
                 throw new RuntimeException("이미 가입된 계정이 존재합니다.");
             } else if (social.getSocialStatus() == SocialStatus.WAITING_SIGN_UP) {
                 Gender gender = Gender.valueOf(request.getGender().toUpperCase());
-                LearnPart learnPart = LearnPart.valueOf(request.getLearnPart().toUpperCase());
                 userRepository.findByNickname(request.getNickname())
                         .ifPresent(nickname -> {
                             throw new RuntimeException("이미 존재하는 닉네임입니다.");
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService{
                         .secondMajor(request.getSecondMajor())
                         .favorite(request.getFavorite())
                         .role(Role.valueOf(request.getRole()))
-                        .learnPart(learnPart)
+                        .learnPart(request.getLearnPart())
                         .build();
 
                 user = userRepository.save(user);

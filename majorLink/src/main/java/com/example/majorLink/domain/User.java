@@ -63,9 +63,8 @@ public class User extends BaseEntity{
     @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'TUTEE'")
     private Role role;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
-    private LearnPart learnPart;
+    private String learnPart;
 
     @Column(nullable = false,  columnDefinition = "INT DEFAULT 0")
     private Integer point;

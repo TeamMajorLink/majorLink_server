@@ -233,7 +233,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
             projects = projectRepository.findByUser(user);
         } else {
             profileCard = profileCardRepository.findByUserNickname(nickname)
-                    .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));   
+                    .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));
             educations = educationRepository.findByUserNickname(nickname);
             projects = projectRepository.findByUserNickname(nickname);
             user = userRepository.findByNickname(nickname)
@@ -241,6 +241,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
         }
 
         return ProfileCardResponse.builder()
+                .profileImg(user.getProfileImage())
                 .nickname(user.getNickname())
                 .firstMajor(user.getFirstMajor())
                 .lineInfo(profileCard.getLineInfo())

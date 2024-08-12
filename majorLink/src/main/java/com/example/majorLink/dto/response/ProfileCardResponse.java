@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProfileCardResponse {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String profileImg;
     private String nickname;
     private String firstMajor;
     @JsonInclude(JsonInclude.Include.NON_NULL)
