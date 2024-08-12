@@ -65,26 +65,25 @@ public class PaymentServiceImpl implements PaymentService{
 
         iamportClient.postPrepare(prepareData);
 
+        Payment payment = Payment.builder()
+                        .user(user)
+                        .merchantUid(merchantUid)
+                        .amount(amount)
+                        .paymentStatus(PaymentStatus.READY)
+                        .build();
+
+        paymentRepository.save(payment);
+
         return productOrderRepository.save(productOrder);
     }
 
     // 결제 검증
-    public Boolean validatePayment(PaymentRequestDTO request) throws IamportResponseException, IOException {
-
-        /*Payment payment = Payment.builder()
-                .impUid(impUid)
-                .user(user)
-                .merchantUid(merchantUid)
-                .amount(amount)
-                .paymentStatus(PaymentStatus.READY)
-                .build();
-
-        paymentRepository.save(payment);*/
-
+    public Boolean validatePayment(UUID userId, PaymentRequestDTO request) throws IamportResponseException, IOException {
+        User user = userRepository.findById(userId).get();
         Payment payment = paymentRepository.findByMerchantUid(request.getMerchantUid()).get();
 
         // 이미 결제된 주문인지 확인
-        if (paymentRepository.findByImpUid(request.getImpUid()).isPresent()) {
+        if (PaymentStatus.PAID.equals(payment.getPaymentStatus())) {
             return false;
         }
 
@@ -101,6 +100,7 @@ public class PaymentServiceImpl implements PaymentService{
         if ("PAID".equalsIgnoreCase(status)) {
             // 결제금액 확인
             if (paymentResponse.getAmount().compareTo(payment.getAmount()) != 0) {
+                // 불일치 시 결제 취소
                 CancelData cancelData = new CancelData(request.getImpUid(), true);
                 iamportClient.cancelPaymentByImpUid(cancelData);
 
@@ -113,7 +113,7 @@ public class PaymentServiceImpl implements PaymentService{
             return false;
         }
 
-        payment.completePayment(PaymentStatus.PAID, request.getImpUid());
+        payment.updatePaymentStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
 
         return true;
