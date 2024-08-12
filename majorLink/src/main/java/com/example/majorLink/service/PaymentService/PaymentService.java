@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface PaymentService {
 
     ProductOrder prepareProductOrder(UUID userId, ProductOrderRequestDTO request) throws IamportResponseException, IOException;
-    Boolean validatePayment(PaymentRequestDTO request) throws IamportResponseException, IOException;
+    Boolean validatePayment(UUID userId, PaymentRequestDTO request) throws IamportResponseException, IOException;
 
 }

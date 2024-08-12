@@ -42,9 +42,11 @@ public class PaymentController {
     // 결제 검증
     @PostMapping("/verify")
     @ResponseBody
-    public PaymentResponseDTO validatePayment(@RequestBody PaymentRequestDTO request) throws IamportResponseException, IOException {
+    public PaymentResponseDTO validatePayment(@AuthenticationPrincipal AuthUser authUser,
+                                              @RequestBody PaymentRequestDTO request) throws IamportResponseException, IOException {
 
-        Boolean isValid = paymentService.validatePayment(request);
+        User user = authUser.getUser();
+        Boolean isValid = paymentService.validatePayment(user.getId(), request);
 
         return PaymentResponseDTO.builder()
                 .paymentStatus(isValid ? PaymentStatus.PAID : PaymentStatus.FAILED)
