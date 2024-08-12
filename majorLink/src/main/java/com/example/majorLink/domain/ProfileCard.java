@@ -2,6 +2,7 @@ package com.example.majorLink.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;

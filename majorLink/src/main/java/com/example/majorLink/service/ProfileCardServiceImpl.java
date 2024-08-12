@@ -8,6 +8,9 @@ import com.example.majorLink.domain.enums.CheckStatus;
 import com.example.majorLink.dto.request.EducationRequest;
 import com.example.majorLink.dto.request.ProfileCardRequest;
 import com.example.majorLink.dto.request.ProjectRequest;
+import com.example.majorLink.dto.response.EducationResponse;
+import com.example.majorLink.dto.response.ProfileCardResponse;
+import com.example.majorLink.dto.response.ProjectResponse;
 import com.example.majorLink.repository.EducationRepository;
 import com.example.majorLink.repository.ProfileCardRepository;
 import com.example.majorLink.repository.ProjectRepository;
@@ -162,7 +165,7 @@ public class ProfileCardServiceImpl implements ProfileCardService{
         }
 
         // 현재 profile-card의 교육 정보
-        List<Project> currentProjects = projectRepository.findByUserId(user.getId());
+        List<Project> currentProjects = projectRepository.findByUser(user);
 
         // 현재 교육 정보을 id를 기준으로 맵으로 변환해 한꺼번에 조회
         Map<Long, Project> projectMap = currentProjects.stream()
@@ -211,6 +214,56 @@ public class ProfileCardServiceImpl implements ProfileCardService{
 
         // 리스트에 존재하지 않는 교육 삭제
         projectRepository.deleteAll(deleteProjects);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProfileCardResponse getProfileCard(User user, UUID userId) {
+        ProfileCard profileCard;
+        List<Education> educations;
+        List<Project> projects;
+
+        // user 인증 토큰이 없는 경우
+        if (user != null) {
+            profileCard = profileCardRepository.findByUser(user)
+                    .orElseThrow(() -> new RuntimeException("프로필 카드를 등록하지 않았습니다."));
+            educations = educationRepository.findByUser(user);
+            projects = projectRepository.findByUser(user);
+        } else {
+            profileCard = profileCardRepository.findByUserId(userId)
+                    .orElseThrow(() -> new RuntimeException("해당 유저가 프로필 카드를 등록하지 않았습니다."));     // 동명이인 문제로 username으로 구분 불가(userId로 구분)
+            educations = educationRepository.findByUserId(userId);
+            projects = projectRepository.findByUserId(userId);
+        }
+
+        return ProfileCardResponse.builder()
+                .lineInfo(profileCard.getLineInfo())
+                .selfInfo(profileCard.getSelfInfo())
+                .educations(educations.stream()
+                        .map(e -> EducationResponse.builder()
+                                .educationId(e.getId())
+                                .eduName(e.getEduName())
+                                .process(e.getProcess())
+                                .start(e.getStart())
+                                .end(e.getEnd())
+                                .checkStatus(e.getCheckStatus() == CheckStatus.CHECK)
+                                .build())
+                        .collect(Collectors.toList()))
+                .projects(projects.stream()
+                        .map(p -> ProjectResponse.builder()
+                                .projectId(p.getId())
+                                .projectName(p.getProjectName())
+                                .space(p.getSpace())
+                                .start(p.getStart())
+                                .end(p.getEnd())
+                                .checkStatus(p.getCheckStatus() == CheckStatus.CHECK)
+                                .projectDescript(p.getProjectDescript())
+                                .build()
+                        ).collect(Collectors.toList()))
+                .skills(profileCard.getSkills())
+                .portfolio(profileCard.getPortfolio())
+                .link(profileCard.getLink())
+                .build();
     }
 
 }

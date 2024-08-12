@@ -71,10 +71,10 @@ public class UserController {
      */
     @GetMapping("/my-page")
     public ResponseEntity<MyPageResponse> getMyPage(@AuthenticationPrincipal AuthUser authUser) {
-        MyPageResponse profileResponse = userService.getMyPage(authUser.getUser());
+        MyPageResponse myPageResponse = userService.getMyPage(authUser.getUser());
 
         return ResponseEntity.ok()
-                .body(profileResponse);
+                .body(myPageResponse);
     }
 
     /**
