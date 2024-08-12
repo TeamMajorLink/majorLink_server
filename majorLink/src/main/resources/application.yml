@@ -58,3 +58,8 @@ default:
   login:
     redirect:
       url: ${LOGIN_URL}
+
+# 결제
+iamport:
+  apiKey: ${IMPORT_API_KEY}
+  apiSecret: ${IMPORT_API_SECRET}
