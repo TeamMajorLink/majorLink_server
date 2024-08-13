@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService{
                         .firstMajor(request.getFirstMajor())
                         .secondMajor(request.getSecondMajor())
                         .favorite(request.getFavorite())
-                        .role(Role.valueOf(request.getRole()))
                         .learnPart(request.getLearnPart())
                         .build();
 
