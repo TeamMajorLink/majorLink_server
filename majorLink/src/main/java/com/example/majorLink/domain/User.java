@@ -59,10 +59,6 @@ public class User extends BaseEntity{
     @Column(length = 40)
     private String favorite;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'TUTEE'")
-    private Role role;
-
     @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
     private String learnPart;
 
