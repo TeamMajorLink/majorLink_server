@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ChatRoomResponseDTO {
-    Long id;
-    String name;
+    private Long id;
+    private String name;
 }
