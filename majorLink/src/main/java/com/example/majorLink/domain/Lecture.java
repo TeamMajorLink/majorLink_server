@@ -73,4 +73,23 @@ public class Lecture extends BaseEntity{
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarkList = new ArrayList<>();*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, Tag tag ){
+        this.name = name;
+        this.body = body;
+        this.curri = curri;
+        this.info = info;
+        this.level = level;
+        this.pNum = pNum;
+        this.time = time;
+        this.day = day;
+        this.startDate = startDate;
+        this.exam = exam;
+        this.category = category;
+        this.tag = tag;
+    }
 }
