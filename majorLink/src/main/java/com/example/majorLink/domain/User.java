@@ -29,6 +29,11 @@ public class User extends BaseEntity{
     @Column(name = "username", nullable = false, length = 20)
     private String username;
 
+    @Column(nullable = false, length = 20)
+    private String nickname;
+    @Column(nullable = false, length = 8)
+    private String birth;
+
     @Column(nullable = false)
     private String password;
 
@@ -54,13 +59,8 @@ public class User extends BaseEntity{
     @Column(length = 40)
     private String favorite;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'TUTEE'")
-    private Role role;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
-    private LearnPart learnPart;
+    private String learnPart;
 
     @Column(nullable = false,  columnDefinition = "INT DEFAULT 0")
     private Integer point;
@@ -74,6 +74,12 @@ public class User extends BaseEntity{
     }
     public void updateUsername(String username) {
         this.username = username;
+    }
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void updateBirth(String birth) {
+        this.birth = birth;
     }
     public void updateEmail(String email) {
         this.email = email;

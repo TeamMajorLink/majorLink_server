@@ -3,8 +3,8 @@ package com.example.majorLink.controller;
 import com.example.majorLink.domain.User;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
-import com.example.majorLink.dto.request.UpdateProfileRequest;
-import com.example.majorLink.dto.response.ProfileResponse;
+import com.example.majorLink.dto.request.UpdateMyPageRequest;
+import com.example.majorLink.dto.response.MyPageResponse;
 import com.example.majorLink.global.auth.AuthUser;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.oauth2.OAuthLoginService;
@@ -65,31 +65,31 @@ public class UserController {
 
     /**
      * 마이페이지 조회 API
-     * [GET] /users/profile
+     * [GET] /users/my-page
      * @param authUser
      * @return
      */
-    @GetMapping("/profile")
-    public ResponseEntity<ProfileResponse> getProfile(@AuthenticationPrincipal AuthUser authUser) {
-        ProfileResponse profileResponse = userService.getProfile(authUser.getUser());
+    @GetMapping("/my-page")
+    public ResponseEntity<MyPageResponse> getMyPage(@AuthenticationPrincipal AuthUser authUser) {
+        MyPageResponse myPageResponse = userService.getMyPage(authUser.getUser());
 
         return ResponseEntity.ok()
-                .body(profileResponse);
+                .body(myPageResponse);
     }
 
     /**
      * 마이페이지 수정 API
-     * [PATCH] /users/profile
+     * [PATCH] /users/my-page
      * @param authUser
-     * @param updateProfileRequest
+     * @param updateMyPageRequest
      * @return
      */
-    @PatchMapping("/profile")
-    public ResponseEntity<?> modifyProfile(
+    @PatchMapping("/my-page")
+    public ResponseEntity<?> modifyMyPage(
             @AuthenticationPrincipal AuthUser authUser,
-            @RequestBody UpdateProfileRequest updateProfileRequest) {
+            @RequestBody UpdateMyPageRequest updateMyPageRequest) {
         User user = authUser.getUser();
-        userService.modifyProfile(user, updateProfileRequest);
+        userService.modifyMyPage(user, updateMyPageRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .build();

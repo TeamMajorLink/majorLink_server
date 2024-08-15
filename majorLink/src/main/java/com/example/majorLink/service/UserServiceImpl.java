@@ -5,8 +5,8 @@ import com.example.majorLink.domain.User;
 import com.example.majorLink.domain.enums.*;
 import com.example.majorLink.dto.request.SignInRequest;
 import com.example.majorLink.dto.request.SignUpRequest;
-import com.example.majorLink.dto.request.UpdateProfileRequest;
-import com.example.majorLink.dto.response.ProfileResponse;
+import com.example.majorLink.dto.request.UpdateMyPageRequest;
+import com.example.majorLink.dto.response.MyPageResponse;
 import com.example.majorLink.global.auth.Tokens;
 import com.example.majorLink.global.auth.service.PasswordService;
 import com.example.majorLink.global.jwt.JwtConfig;
@@ -65,7 +65,11 @@ public class UserServiceImpl implements UserService{
                 throw new RuntimeException("이미 가입된 계정이 존재합니다.");
             } else if (social.getSocialStatus() == SocialStatus.WAITING_SIGN_UP) {
                 Gender gender = Gender.valueOf(request.getGender().toUpperCase());
-                LearnPart learnPart = LearnPart.valueOf(request.getLearnPart().toUpperCase());
+                userRepository.findByNickname(request.getNickname())
+                        .ifPresent(nickname -> {
+                            throw new RuntimeException("이미 존재하는 닉네임입니다.");
+                        }
+                );
 
                 // 비밀 번호 암호화
                 String encryptedPassword = passwordService.encodePassword(request.getPassword());
@@ -73,6 +77,8 @@ public class UserServiceImpl implements UserService{
                         .id(UUID.randomUUID())
                         .email(request.getEmail())
                         .username(request.getUsername())
+                        .nickname(request.getNickname())
+                        .birth(request.getBirth())
                         .password(encryptedPassword)
                         .gender(gender)
                         .phone(request.getPhone())
@@ -80,8 +86,7 @@ public class UserServiceImpl implements UserService{
                         .firstMajor(request.getFirstMajor())
                         .secondMajor(request.getSecondMajor())
                         .favorite(request.getFavorite())
-                        .role(Role.valueOf(request.getRole()))
-                        .learnPart(learnPart)
+                        .learnPart(request.getLearnPart())
                         .build();
 
                 user = userRepository.save(user);
@@ -105,10 +110,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponse getProfile(User user) {
-        return ProfileResponse.builder()
+    public MyPageResponse getMyPage(User user) {
+        return MyPageResponse.builder()
                 .profileImg(user.getProfileImage())
                 .username(user.getUsername())
+                .nickname(user.getNickname())
+                .birth(user.getBirth())
                 .email(user.getEmail())
                 .firstMajor(user.getFirstMajor())
                 .secondMajor(user.getSecondMajor())
@@ -120,12 +127,23 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void modifyProfile(User user, UpdateProfileRequest request) {
+    public void modifyMyPage(User user, UpdateMyPageRequest request) {
         if (request.getProfileImg() != null) {
             user.updateProfileImg(request.getProfileImg());
         }
         if (request.getUsername() != null) {
             user.updateUsername(request.getUsername());
+        }
+        if (request.getNickname() != null) {
+            userRepository.findByNickname(request.getNickname())
+                    .ifPresent(nickname -> {
+                                throw new RuntimeException("이미 존재하는 닉네임입니다.");
+                            }
+                    );
+            user.updateNickname(request.getNickname());
+        }
+        if (request.getBirth() != null) {
+            user.updateBirth(request.getBirth());
         }
         if (request.getEmail() != null) {
             user.updateEmail(request.getEmail());
