@@ -36,4 +36,6 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> onFailure(String code, String message, T data) {
         return new BaseResponse<>(false, code, message, data);
     }
+
+    //응답
 }
