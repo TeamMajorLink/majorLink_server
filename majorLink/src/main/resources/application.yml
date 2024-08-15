@@ -46,7 +46,7 @@ spring:
       port: 6379
       database: 1
 server:
-  port: 9000
+  port: 8080
 
 logging:
   level:
