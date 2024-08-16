@@ -17,6 +17,7 @@ import com.siot.IamportRestClient.request.PrepareData;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService{
 
+    @Autowired
     private IamportClient iamportClient;
-
-    @Value("${iamport.api_key}")
-    private String apiKey;
-
-    @Value("${iamport.api_secret}")
-    private String apiSecret;
-
-    @PostConstruct
-    public void init() {
-        iamportClient = new IamportClient(apiKey, apiSecret);
-    }
 
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
