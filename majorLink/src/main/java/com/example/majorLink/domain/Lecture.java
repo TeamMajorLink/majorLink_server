@@ -3,16 +3,11 @@ package com.example.majorLink.domain;
 import com.example.majorLink.domain.enums.Day;
 import com.example.majorLink.domain.enums.Exam;
 import com.example.majorLink.domain.enums.Level;
-import com.example.majorLink.domain.mapping.Bookmark;
-import com.example.majorLink.domain.mapping.Liked;
-import com.example.majorLink.domain.mapping.UserLecture;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -41,8 +36,13 @@ public class Lecture extends BaseEntity{
     @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private Level level;
 
+    // 총 인원
     @Column(nullable = false)
     private int pNum;
+
+    // 현재 신청 인원
+    @Column(nullable = false)
+    private int curPNum;
 
     private LocalTime time;
 
@@ -61,24 +61,13 @@ public class Lecture extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @Column(nullable = false, length = 20)
+    private String tag;
 
-    /*@OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<UserLecture> userLectureList = new ArrayList<>();
+    @Column(nullable = false, length = 100)
+    private String tutor;
 
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Liked> likedList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();*/
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, Tag tag ){
+    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag ){
         this.name = name;
         this.body = body;
         this.curri = curri;
@@ -91,5 +80,13 @@ public class Lecture extends BaseEntity{
         this.exam = exam;
         this.category = category;
         this.tag = tag;
+    }
+
+    public void addCurPNum(){
+        this.curPNum++;
+    }
+
+    public void subCurPNum(){
+        this.curPNum--;
     }
 }

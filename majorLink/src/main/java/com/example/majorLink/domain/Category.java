@@ -1,10 +1,8 @@
 package com.example.majorLink.domain;
 
+import com.example.majorLink.domain.enums.LearnPart;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,12 +15,11 @@ public class Category extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 40)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mainCategory", nullable = false, columnDefinition = "VARCHAR(20)")
+    private LearnPart learnPart;
 
-    /*@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Tag> tagList = new ArrayList<>();
+    @Column(nullable = false, length = 20)
+    private String subCategory;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Lecture> lectureList = new ArrayList<>();*/
 }
