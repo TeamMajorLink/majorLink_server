@@ -48,5 +48,12 @@ public class LectureResponseDTO {
         LocalDateTime updatedAt;
     }
 
-
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CreateTuteeLecture {
+        Long tuteeLectureId;
+        LocalDateTime createdAt;
+    }
 }
