@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Test Page</title>
+</head>
+<body>
+<input type="text" id="id" placeholder="Enter user ID"/>
+<button type="button" onclick="login()">로그인</button>
+</body>
+<script type="text/javascript">
+    function login() {
+        const id = document.getElementById('id').value.trim();
+        if (!id) {
+            alert('ID를 입력해주세요.');
+            return;
+        }
+
+        const eventSource = new EventSource(`/notification/subscribe/${id}`);
+
+
+        eventSource.onmessage = function(event) {
+            console.log('Received message:', event.data);
+
+            const data = JSON.parse(event.data);
+
+            (async () => {
+                const showNotification = () => {
+                    const notification = new Notification('알림', {
+                        body: data.content,
+                        icon: '/path/to/icon.png' // 아이콘 경로 설정 (선택 사항)
+                    });
+
+                    setTimeout(() => {
+                        notification.close();
+                    }, 10 * 1000);
+
+                    notification.addEventListener('click', () => {
+                        window.open(data.url, '_blank');
+                    });
+                }
+
+                // 브라우저 알림 허용 권한
+                let granted = false;
+
+                if (Notification.permission === 'granted') {
+                    granted = true;
+                } else if (Notification.permission !== 'denied') {
+                    let permission = await Notification.requestPermission();
+                    granted = permission === 'granted';
+                }
+
+                // 알림 보여주기
+                if (granted) {
+                    showNotification();
+                }
+            })();
+        };
+
+        eventSource.onerror = function(event) {
+            console.error('SSE 오류:', event);
+            eventSource.close();
+        };
+    }
+</script>
+</html>
