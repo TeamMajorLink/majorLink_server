@@ -13,4 +13,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByUser(User user);
     @Query("SELECT p FROM Project p WHERE p.user.userStatus = 'ACTIVE' AND p.user.nickname = :nickname")
     List<Project> findByUserNickname(String nickname);
+    
 }
