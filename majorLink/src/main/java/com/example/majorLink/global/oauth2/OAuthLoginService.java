@@ -39,6 +39,7 @@ public class OAuthLoginService extends DefaultOAuth2UserService {
                 .getUserNameAttributeName();
 
         OAuthAttributes oAuthAttributes = OAuthAttributes.of(provider, userNameAttribute, oAuth2User.getAttributes());
+        oAuthAttributes.updateAccessToken(userRequest.getAccessToken().getTokenValue());
 
         log.info(oAuthAttributes.getId());
         log.info("***********************");

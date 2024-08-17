@@ -9,6 +9,8 @@
           <option value="refresh-token" />
           <option value="X-Auth-Token" />
           <option value="refresh-Token" />
+          <option value="providerId" />
+          <option value="accessToken" />
         </set>
       </option>
     </inspection_tool>
