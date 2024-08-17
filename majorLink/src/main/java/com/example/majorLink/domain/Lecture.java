@@ -33,7 +33,7 @@ public class Lecture extends BaseEntity{
     private String info;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private Level level;
 
     // 총 인원
