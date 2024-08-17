@@ -3,9 +3,6 @@ package com.example.majorLink.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Builder
@@ -17,12 +14,10 @@ public class Category extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 40)
-    private String name;
+    @Column(nullable = false, length = 20)
+    private String mainCategory;
 
-    /*@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Tag> tagList = new ArrayList<>();
+    @Column(nullable = false, length = 20)
+    private String subCategory;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Lecture> lectureList = new ArrayList<>();*/
 }

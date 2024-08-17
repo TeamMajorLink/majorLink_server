@@ -41,18 +41,28 @@ public class ReviewServiceImpl implements ReviewService{
 
     // 리뷰 수정
     @Override
-    public Review updateReview(Long reviewId, ReviewRequestDTO request) {
+    public Review updateReview(UUID userId, Long reviewId, ReviewRequestDTO request) {
+        User user = userRepository.findById(userId).get();
         Review review = reviewRepository.findById(reviewId).get();
 
         review.updateReview(request.getTitle(), request.getContent(), request.getRate());
+
+        if (!review.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("Invalid user ID");
+        }
 
         return reviewRepository.save(review);
     }
 
     // 리뷰 삭제
     @Override
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(UUID userId, Long reviewId) {
+        User user = userRepository.findById(userId).get();
         Review review = reviewRepository.findById(reviewId).get();
+
+        if (!review.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("Invalid user ID");
+        }
 
         reviewRepository.delete(review);
     }
@@ -65,5 +75,11 @@ public class ReviewServiceImpl implements ReviewService{
         Page<Review> reviewPage = reviewRepository.findAllByLecture(lecture, PageRequest.of(page, 10));
 
         return reviewPage;
+    }
+
+    // 리뷰 내용 조회
+    @Override
+    public Review getReview(Long reviewId) {
+        return reviewRepository.findById(reviewId).get();
     }
 }
