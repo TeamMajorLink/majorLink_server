@@ -10,8 +10,10 @@ import java.util.UUID;
 public interface ReviewService {
 
     Review createReview(UUID user, Long lectureId, ReviewRequestDTO request);
-    Review updateReview(Long reviewId, ReviewRequestDTO request);
-    void deleteReview(Long reviewId);
+    Review updateReview(UUID userId, Long reviewId, ReviewRequestDTO request);
+    void deleteReview(UUID userId, Long reviewId);
 
     Page<Review> getReviewList(Long lectureId, Integer page);
+
+    Review getReview(Long reviewId);
 }

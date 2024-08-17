@@ -22,7 +22,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 리뷰 추가하는 api
-    @PostMapping("/{lectureId}/reviews")
+    @PostMapping("/{lectureId}")
     @ResponseBody
     public ReviewResponseDTO.CreateReview createReview(@RequestBody ReviewRequestDTO request,
                                                        @PathVariable(name = "lectureId") Long lectureId,
@@ -40,8 +40,10 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     @ResponseBody
     public ReviewResponseDTO.UpdateReview updateReview(@RequestBody ReviewRequestDTO request,
-                                                       @PathVariable(name = "reviewId") Long reviewId){
-        Review review = reviewService.updateReview(reviewId, request);
+                                                       @PathVariable(name = "reviewId") Long reviewId,
+                                                       @AuthenticationPrincipal AuthUser authUser){
+        User user = authUser.getUser();
+        Review review = reviewService.updateReview(user.getId(), reviewId, request);
 
         return ReviewResponseDTO.UpdateReview.builder()
                 .reviewId(review.getId())
@@ -52,16 +54,18 @@ public class ReviewController {
     // 리뷰 삭제하는 api
     @DeleteMapping("/{reviewId}")
     @ResponseBody
-    public void deleteReview(@PathVariable(name = "reviewId") Long reviewId){
-        reviewService.deleteReview(reviewId);
+    public void deleteReview(@PathVariable(name = "reviewId") Long reviewId,
+                             @AuthenticationPrincipal AuthUser authUser){
+        User user = authUser.getUser();
+
+        reviewService.deleteReview(user.getId(), reviewId);
     }
 
     // 리뷰 조회하는 api
-    @GetMapping("/{lectureId}/reviews")
+    @GetMapping("/{lectureId}")
     @ResponseBody
-    // 스웨거 세팅 후 파라미터 등 설명 추가
     public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
-                                                          @RequestParam(name = "page") Integer page){
+                                                          @RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Review> reviewList = reviewService.getReviewList(lectureId, page-1);
 
         return ReviewResponseDTO.ReviewPreViewList.builder()
@@ -69,8 +73,6 @@ public class ReviewController {
                         .map(review -> ReviewResponseDTO.ReviewPreView.builder()
                                 .ownerNickname(review.getUser().getUsername())
                                 .rate(review.getRate())
-                                .content(review.getContent())
-                                .createdAt(review.getCreatedAt())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(reviewList.getNumberOfElements())
@@ -78,6 +80,20 @@ public class ReviewController {
                 .totalElements(reviewList.getTotalElements())
                 .isFirst(reviewList.isFirst())
                 .isLast(reviewList.isLast())
+                .build();
+    }
+
+    // 리뷰 내용 조회 api
+    @GetMapping("/{reviewId}/details")
+    @ResponseBody
+    public ReviewResponseDTO.ReviewPreView getReview(@PathVariable(name = "reviewId") Long reviewId){
+        Review review = reviewService.getReview(reviewId);
+
+        return ReviewResponseDTO.ReviewPreView.builder()
+                .ownerNickname(review.getUser().getUsername())
+                .rate(review.getRate())
+                .content(review.getContent())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 }
