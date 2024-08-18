@@ -72,6 +72,8 @@ public class ReviewController {
                 .reviewList(reviewList.stream()
                         .map(review -> ReviewResponseDTO.ReviewPreView.builder()
                                 .ownerNickname(review.getUser().getUsername())
+                                .createdAt(review.getCreatedAt())
+                                .title(review.getTitle())
                                 .rate(review.getRate())
                                 .build())
                         .collect(Collectors.toList()))
@@ -86,11 +88,12 @@ public class ReviewController {
     // 리뷰 내용 조회 api
     @GetMapping("/{reviewId}/details")
     @ResponseBody
-    public ReviewResponseDTO.ReviewPreView getReview(@PathVariable(name = "reviewId") Long reviewId){
+    public ReviewResponseDTO.ReviewDetails getReview(@PathVariable(name = "reviewId") Long reviewId){
         Review review = reviewService.getReview(reviewId);
 
-        return ReviewResponseDTO.ReviewPreView.builder()
+        return ReviewResponseDTO.ReviewDetails.builder()
                 .ownerNickname(review.getUser().getUsername())
+                .title(review.getTitle())
                 .rate(review.getRate())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())
