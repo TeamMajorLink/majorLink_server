@@ -9,4 +9,6 @@ public interface LikedRepository extends JpaRepository<Liked, Long> {
     Boolean existsByUserAndLecture(User user, Lecture lecture);
 
     void deleteByUserAndLecture(User user, Lecture lecture);
+
+    void deleteAllByLecture(Lecture lecture);
 }
