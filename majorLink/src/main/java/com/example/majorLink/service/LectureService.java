@@ -5,6 +5,7 @@ import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface LectureService {
@@ -23,4 +24,9 @@ public interface LectureService {
     Page<Lecture> getNewLecture(Integer page);
     Page<Lecture> getMostRecruitedLecture(Integer page);
     Page<Lecture> getLectureByCategory(Integer page, Long categoryId);
+
+    List<String> getMainCategory();
+    List<String> getSubCategory(String mainCategory);
+
+    Long getCategoryId(String mainCategory, String subCategory);
 }

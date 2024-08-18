@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -230,5 +231,22 @@ public class LectureServiceImpl implements LectureService {
     public Page<Lecture> getLectureByCategory(Integer page, Long categoryId) {
 
         return lectureRepository.orderByCategoryId(categoryId, PageRequest.of(page, 10));
+    }
+
+    // 메인 카테고리 조회
+    public List<String> getMainCategory() {
+        return categoryRepository.findMainCategory();
+    }
+
+    // 서브 카테고리 조회
+    public List<String> getSubCategory(String mainCategory) {
+        return categoryRepository.findSubCategory(mainCategory);
+    }
+
+    // 카테고리 ID 조회
+    public Long getCategoryId(String mainCategory, String subCategory) {
+        Category category = categoryRepository.findByMainCategoryAndSubCategory(mainCategory, subCategory)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        return category.getId();
     }
 }

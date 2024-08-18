@@ -83,4 +83,20 @@ public class LectureResponseDTO {
         Long tuteeLectureId;
         LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MainCategory {
+        List<String> mainCategoryList;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SubCategory {
+        List<String> subCategoryList;
+    }
 }

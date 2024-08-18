@@ -235,4 +235,30 @@ public class LectureController {
                 .isLast(lectureList.isLast())
                 .build();
     }
+
+    // 메인 카테고리 조회 api
+    @GetMapping("/categories/main")
+    @ResponseBody
+    public LectureResponseDTO.MainCategory getMainCategory() {
+        return LectureResponseDTO.MainCategory.builder()
+                .mainCategoryList(lectureService.getMainCategory())
+                .build();
+    }
+
+    // 서브 카테고리 조회 api
+    @GetMapping("/categories/sub")
+    @ResponseBody
+    public LectureResponseDTO.SubCategory getSubCategory(@RequestParam(name = "mainCategory") String mainCategory) {
+        return LectureResponseDTO.SubCategory.builder()
+                .subCategoryList(lectureService.getSubCategory(mainCategory))
+                .build();
+    }
+
+    // 카테고리 id 조회 api
+    @GetMapping("/categories/id")
+    @ResponseBody
+    public Long getCategoryId(@RequestParam(name = "mainCategory") String mainCategory,
+                              @RequestParam(name = "subCategory") String subCategory) {
+        return lectureService.getCategoryId(mainCategory, subCategory);
+    }
 }
