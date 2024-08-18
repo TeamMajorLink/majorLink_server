@@ -68,13 +68,17 @@ public class LectureController {
     @GetMapping("/list")
     @ResponseBody
     // 스웨거 세팅 후 파라미터 등 설명 추가
-    public LectureResponseDTO.LecturePreViewList getLectures(@RequestParam(name = "page") Integer page){
+    public LectureResponseDTO.LecturePreViewList getLectures(@RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Lecture> lectureList = lectureService.getLectureList(page-1);
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
                                 .name(lecture.getName())
+                                .cNum(lecture.getCNum())
+                                .pNum(lecture.getPNum())
+                                .mainCategory(lecture.getCategory().getMainCategory())
+                                .subCategory(lecture.getCategory().getSubCategory())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
@@ -82,6 +86,31 @@ public class LectureController {
                 .totalElements(lectureList.getTotalElements())
                 .isFirst(lectureList.isFirst())
                 .isLast(lectureList.isLast())
+                .build();
+    }
+
+    // 강의 상세페이지
+    @GetMapping("/{lectureId}/details")
+    @ResponseBody
+    public LectureResponseDTO.LectureDetails getLecture(@PathVariable(name = "lectureId") Long lectureId){
+        Lecture lecture = lectureService.getLecture(lectureId);
+
+        return LectureResponseDTO.LectureDetails.builder()
+                .name(lecture.getName())
+                .body(lecture.getBody())
+                .curri(lecture.getCurri())
+                .info(lecture.getInfo())
+                .level(lecture.getLevel().name())
+                .cNum(lecture.getCNum())
+                .pNum(lecture.getPNum())
+                .time(lecture.getTime().toString())
+                .day(lecture.getDay().name())
+                .startDate(lecture.getStartDate())
+                .exam(lecture.getExam().name())
+                .tag(lecture.getTag())
+                .tutor(lecture.getTutor())
+                .mainCategory(lecture.getCategory().getMainCategory())
+                .subCategory(lecture.getCategory().getSubCategory())
                 .build();
     }
 
@@ -100,16 +129,6 @@ public class LectureController {
                 .build();
     }
 
-    // 강의 취소 api
-    @DeleteMapping("/{lectureId}/cancel")
-    @ResponseBody
-    public void cancelLecture(@PathVariable(name = "lectureId") Long lectureId,
-                              @AuthenticationPrincipal AuthUser authUser){
-        User user = authUser.getUser();
-
-        lectureService.cancelLecture(user.getId(), lectureId);
-    }
-
     // 강의 좋아요 토글 api
     @PostMapping("/{lectureId}/like")
     @ResponseBody
@@ -123,13 +142,17 @@ public class LectureController {
     // 좋아요 많은 강의 조회 api
     @GetMapping("/mostLiked")
     @ResponseBody
-    public LectureResponseDTO.LecturePreViewList getMostLikedLectures(@RequestParam(name = "page") Integer page){
+    public LectureResponseDTO.LecturePreViewList getMostLikedLectures(@RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Lecture> lectureList = lectureService.getMostLikedLecture(page-1);
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
                                 .name(lecture.getName())
+                                .mainCategory(lecture.getCategory().getMainCategory())
+                                .subCategory(lecture.getCategory().getSubCategory())
+                                .cNum(lecture.getCNum())
+                                .pNum(lecture.getPNum())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
@@ -143,13 +166,17 @@ public class LectureController {
     // 최신 강의 조회 api
     @GetMapping("/new")
     @ResponseBody
-    public LectureResponseDTO.LecturePreViewList getNewLectures(@RequestParam(name = "page") Integer page){
+    public LectureResponseDTO.LecturePreViewList getNewLectures(@RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Lecture> lectureList = lectureService.getNewLecture(page-1);
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
                                 .name(lecture.getName())
+                                .mainCategory(lecture.getCategory().getMainCategory())
+                                .subCategory(lecture.getCategory().getSubCategory())
+                                .cNum(lecture.getCNum())
+                                .pNum(lecture.getPNum())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
@@ -163,13 +190,17 @@ public class LectureController {
     // 가장 많이 모집된 강의 조회 api
     @GetMapping("/mostRecruited")
     @ResponseBody
-    public LectureResponseDTO.LecturePreViewList getMostRecruitedLectures(@RequestParam(name = "page") Integer page){
+    public LectureResponseDTO.LecturePreViewList getMostRecruitedLectures(@RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Lecture> lectureList = lectureService.getMostRecruitedLecture(page-1);
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
                                 .name(lecture.getName())
+                                .mainCategory(lecture.getCategory().getMainCategory())
+                                .subCategory(lecture.getCategory().getSubCategory())
+                                .cNum(lecture.getCNum())
+                                .pNum(lecture.getPNum())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
@@ -183,7 +214,7 @@ public class LectureController {
     // 카테고리별 강의 조회 api
     @GetMapping("/{categoryId}")
     @ResponseBody
-    public LectureResponseDTO.LecturePreViewList getLecturesByCategory(@RequestParam(name = "page") Integer page,
+    public LectureResponseDTO.LecturePreViewList getLecturesByCategory(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                        @PathVariable(name = "categoryId") Long categoryId){
         Page<Lecture> lectureList = lectureService.getLectureByCategory(page-1, categoryId);
 
@@ -191,6 +222,10 @@ public class LectureController {
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
                                 .name(lecture.getName())
+                                .mainCategory(lecture.getCategory().getMainCategory())
+                                .subCategory(lecture.getCategory().getSubCategory())
+                                .cNum(lecture.getCNum())
+                                .pNum(lecture.getPNum())
                                 .build())
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())

@@ -13,9 +13,9 @@ public interface LectureService {
     void DeleteLecture(UUID userId, Long lectureId);
 
     Page<Lecture> getLectureList(Integer page);
+    Lecture getLecture(Long lectureId);
 
     TuteeLecture addLecture(UUID userId, Long lectureId);
-    void cancelLecture(UUID userId, Long lectureId);
 
     Boolean toggleLike(UUID userId, Long lectureId);
 
