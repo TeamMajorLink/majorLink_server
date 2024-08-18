@@ -11,7 +11,7 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     @Query("SELECT l FROM Lecture l ORDER BY (SELECT COUNT(lk) FROM Liked lk WHERE lk.lecture.id = l.id) DESC")
     Page<Lecture> orderByLikedCount(Pageable pageable);
 
-    @Query("SELECT l FROM Lecture l ORDER BY l.curPNum DESC")
+    @Query("SELECT l FROM Lecture l ORDER BY l.cNum DESC")
     Page<Lecture> orderByCurPNum(Pageable pageable);
 
     @Query("SELECT l FROM Lecture l WHERE l.category.id = :categoryId")

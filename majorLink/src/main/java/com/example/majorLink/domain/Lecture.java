@@ -27,7 +27,7 @@ public class Lecture extends BaseEntity{
     private String body;
 
     @Column(nullable = false)
-    private int curri;
+    private Integer curri;
 
     @Column(nullable = false, length = 1000)
     private String info;
@@ -38,11 +38,11 @@ public class Lecture extends BaseEntity{
 
     // 총 인원
     @Column(nullable = false)
-    private int pNum;
+    private Integer pNum;
 
     // 현재 신청 인원
     @Column(nullable = false)
-    private int curPNum;
+    private Integer cNum;
 
     private LocalTime time;
 
@@ -57,7 +57,7 @@ public class Lecture extends BaseEntity{
     @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private Exam exam;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -83,10 +83,10 @@ public class Lecture extends BaseEntity{
     }
 
     public void addCurPNum(){
-        this.curPNum++;
+        this.cNum++;
     }
 
     public void subCurPNum(){
-        this.curPNum--;
+        this.cNum--;
     }
 }
