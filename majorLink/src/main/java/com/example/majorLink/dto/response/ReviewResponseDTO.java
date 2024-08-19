@@ -26,6 +26,18 @@ public class ReviewResponseDTO {
     public static class ReviewPreView {
         String ownerNickname;
         int rate;
+        String title;
+        LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReviewDetails {
+        String ownerNickname;
+        int rate;
+        String title;
         String content;
         LocalDateTime createdAt;
     }

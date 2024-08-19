@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -46,8 +47,7 @@ public class LectureServiceImpl implements LectureService {
                 .curri(request.getCurri())
                 .info(request.getInfo())
                 .level(request.getLevel())
-                .pNum(request.getPNum())
-                .curPNum(0)
+                .pNum(request.getNum())
                 .time(request.getTime())
                 .day(request.getDay())
                 .startDate(request.getStartDate())
@@ -55,6 +55,7 @@ public class LectureServiceImpl implements LectureService {
                 .category(category)
                 .tag(request.getTag())
                 .tutor(user.getNickname())
+                .cNum(0)
                 .build();
 
         Lecture saveLecture = lectureRepository.save(lecture);
@@ -99,7 +100,7 @@ public class LectureServiceImpl implements LectureService {
                 request.getCurri(),
                 request.getInfo(),
                 request.getLevel(),
-                request.getPNum(),
+                request.getNum(),
                 request.getTime(),
                 request.getDay(),
                 request.getStartDate(),
@@ -130,6 +131,10 @@ public class LectureServiceImpl implements LectureService {
             throw new IllegalStateException("You do not have permission to delete this lecture");
         }
 
+        tutorLectureRepository.deleteAllByLecture(lecture);
+        tuteeLectureRepository.deleteAllByLecture(lecture);
+        likedRepository.deleteAllByLecture(lecture);
+
         // Lecture 엔티티 삭제
         lectureRepository.delete(lecture);
     }
@@ -142,6 +147,13 @@ public class LectureServiceImpl implements LectureService {
         return lecturePage;
     }
 
+    // 강의 상세 내용 조회
+    @Override
+    public Lecture getLecture(Long lectureId) {
+        return lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid lecture ID"));
+    }
+
     // 강의 수강 신청
     @Override
     public TuteeLecture addLecture(UUID userId, Long lectureId) {
@@ -151,7 +163,7 @@ public class LectureServiceImpl implements LectureService {
         Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lecture ID"));
 
-        if (lecture.getPNum() >= lecture.getCurPNum()) {
+        if (lecture.getPNum() <= lecture.getCNum()) {
             throw new IllegalStateException("The lecture is full");
         }
 
@@ -163,23 +175,6 @@ public class LectureServiceImpl implements LectureService {
         lecture.addCurPNum();
 
         return tuteeLectureRepository.save(tuteeLecture);
-    }
-
-    // 강의 수강 취소
-    @Override
-    public void cancelLecture(UUID userId, Long lectureId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
-
-        Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid lecture ID"));
-
-        TuteeLecture tuteeLecture = tuteeLectureRepository.findByUserIdAndLectureId(userId, lectureId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID or lecture ID"));
-
-        lecture.subCurPNum();
-
-        tuteeLectureRepository.delete(tuteeLecture);
     }
 
     // 강의 좋아요
@@ -236,5 +231,22 @@ public class LectureServiceImpl implements LectureService {
     public Page<Lecture> getLectureByCategory(Integer page, Long categoryId) {
 
         return lectureRepository.orderByCategoryId(categoryId, PageRequest.of(page, 10));
+    }
+
+    // 메인 카테고리 조회
+    public List<String> getMainCategory() {
+        return categoryRepository.findMainCategory();
+    }
+
+    // 서브 카테고리 조회
+    public List<String> getSubCategory(String mainCategory) {
+        return categoryRepository.findSubCategory(mainCategory);
+    }
+
+    // 카테고리 ID 조회
+    public Long getCategoryId(String mainCategory, String subCategory) {
+        Category category = categoryRepository.findByMainCategoryAndSubCategory(mainCategory, subCategory)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        return category.getId();
     }
 }
