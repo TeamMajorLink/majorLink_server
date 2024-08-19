@@ -28,6 +28,7 @@ public class SecurityConfig {
         http
                 .httpBasic(AbstractHttpConfigurer::disable) // http form login 비활성화
                 .csrf(AbstractHttpConfigurer::disable) // csrf 필터 비활성화 -> cookies 사용하지 않으므로 위험 없음
+//                .cors(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable) // basic login 비활성화
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session 사용 X
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)

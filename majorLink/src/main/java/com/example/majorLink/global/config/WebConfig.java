@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "http://localhost:3007","http://localhost:3008") //프론트 테스트 url입니다.
-                .allowedMethods("POST", "GET", "DELETE", "PUT", "PATCH")
-                .allowedHeaders("*")
+                .allowedMethods("POST", "GET", "DELETE", "PUT", "PATCH", "OPTIONS")
+                .allowedHeaders("Content-Type", "Authorization")
                 .allowCredentials(true);
     }
 }
