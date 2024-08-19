@@ -57,6 +57,7 @@ public class LectureServiceImpl implements LectureService {
                 .tag(request.getTag())
                 .tutor(user.getNickname())
                 .cNum(0)
+                .user(user)
                 .build();
 
         Lecture saveLecture = lectureRepository.save(lecture);
@@ -179,7 +180,7 @@ public class LectureServiceImpl implements LectureService {
 
         // 수강 신청 시 튜터에게 알림 전달
         String msg = user.getNickname() + " 님으로 부터 수업 신청이 왔습니다.";
-        notificationService.send(lecture.getUser(), lecture, msg);
+        notificationService.send(user, lecture, msg);
 
         return savedTuteeLecture;
 

@@ -7,8 +7,9 @@ import lombok.Getter;
 @Builder
 public class NotificationResponse {
     private Long id;
+    private String receiver;
+    private String sender;
     private String content;
     private String url;
-    private Boolean isRead;
     private String createdAt;
 }

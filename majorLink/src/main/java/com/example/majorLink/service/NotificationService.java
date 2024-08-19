@@ -49,9 +49,9 @@ public class NotificationService {
         return emitter;
     }
 
-    public void send(User receiver, Lecture lecture, String content) {
-        Notification notification = notificationRepository.save(createNotification(receiver, lecture, content));
-        String userId = String.valueOf(receiver.getId());
+    public void send(User sender, Lecture lecture, String content) {
+        Notification notification = notificationRepository.save(createNotification(sender, lecture, content));
+        String userId = String.valueOf(sender.getId());
 
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByUserId(UUID.fromString(userId));
         sseEmitters.forEach(
@@ -61,22 +61,23 @@ public class NotificationService {
                             .id(notification.getId())
                             .content(String.valueOf(notification.getContent()))
                             .url(String.valueOf(notification.getUrl()))
-                            .isRead(notification.getIsRead())
+                            .sender(sender.getNickname())
+                            .receiver(lecture.getUser().getNickname())
+                            .createdAt(String.valueOf(notification.getCreatedAt()))
                             .build());
                 }
         );
     }
 
-    private Notification createNotification(User receiver, Lecture lecture, String content) {
-        RelatedUrl relatedUrl = new RelatedUrl();
-        relatedUrl.setUrl("/lecture/" + lecture.getId());
+    private Notification createNotification(User sender, Lecture lecture, String content) {
+        String url = "/lecture/" + lecture.getId() + "/details";
 
         return Notification.builder()
-                .receiver(receiver)
+                .sender(sender)
+                .receiver(lecture.getUser())
                 .content(content)
                 .lecture(lecture)
-                .url(relatedUrl)
-                .isRead(false)
+                .url(url)
                 .build();
     }
 
