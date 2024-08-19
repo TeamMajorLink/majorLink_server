@@ -45,6 +45,7 @@ spring:
       host: localhost
       port: 6379
       database: 1
+
 server:
   port: 8080
 
@@ -58,3 +59,8 @@ default:
   login:
     redirect:
       url: ${LOGIN_URL}
+
+# 결제
+iamport:
+  api_key: ${IMPORT_API_KEY}
+  api_secret: ${IMPORT_API_SECRET}

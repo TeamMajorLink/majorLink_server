@@ -48,12 +48,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
             OAuthAttributes attributes = oAuth2User.getOAuthAttributes();
             String uri = UriComponentsBuilder.fromUriString(redirectUrl + "/new-user")
-//                    .queryParam("temp-token", String.valueOf(socialInfo.getTemporalToken()))
-                    .queryParam("username", attributes.getUsername())
-                    .queryParam("email", attributes.getEmail())
-                    .queryParam("profileImg", attributes.getProfileImg())
-                    .queryParam("phone", attributes.getPhone())
-                    .queryParam("gender", attributes.getGender())
+                    .queryParam("providerId", attributes.getId())
+                    .queryParam("accessToken", attributes.getAccessToken())
                     .toUriString();
 
             response.sendRedirect(uri);

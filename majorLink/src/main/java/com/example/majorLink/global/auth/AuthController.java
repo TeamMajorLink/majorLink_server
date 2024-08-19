@@ -25,22 +25,13 @@ public class AuthController {
     }
 
     @GetMapping("/result/new-user")
-    public void returnLoginResult(HttpServletResponse response,
-                                  @RequestParam(value = "username") String username,
-                                  @RequestParam(value = "email") String email,
-                                  @RequestParam(value = "profileImg") String profileImg,
-                                  @RequestParam(value = "phone") String phone,
-                                  @RequestParam(value = "gender", required = false) String gender) throws IOException {
-        FirstLoginResponse firstLogInResponse = FirstLoginResponse.builder()
-                .username(username)
-                .email(email)
-                .phone(phone)
-                .profileImg(profileImg)
-                .gender(gender)
-                .build();
+    public void returnFirstLoginResult(HttpServletResponse response,
+                                  @RequestParam(name = "providerId") String providerId,
+                                  @RequestParam(name = "accessToken") String accessToken)
+                                  throws IOException {
 
-//        response.setHeader("temp-token", tempToken);
-        response.getWriter().write(objectMapper.writeValueAsString(firstLogInResponse));
+        response.setHeader("providerId", providerId);
+        response.setHeader("accessToken", accessToken);
     }
 
 //    @PostMapping("/reissue-token")

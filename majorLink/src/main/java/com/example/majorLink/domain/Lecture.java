@@ -3,16 +3,11 @@ package com.example.majorLink.domain;
 import com.example.majorLink.domain.enums.Day;
 import com.example.majorLink.domain.enums.Exam;
 import com.example.majorLink.domain.enums.Level;
-import com.example.majorLink.domain.mapping.Bookmark;
-import com.example.majorLink.domain.mapping.Liked;
-import com.example.majorLink.domain.mapping.UserLecture;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -32,17 +27,22 @@ public class Lecture extends BaseEntity{
     private String body;
 
     @Column(nullable = false)
-    private int curri;
+    private Integer curri;
 
     @Column(nullable = false, length = 1000)
     private String info;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
     private Level level;
 
+    // 총 인원
     @Column(nullable = false)
-    private int pNum;
+    private Integer pNum;
+
+    // 현재 신청 인원
+    @Column(nullable = false)
+    private Integer cNum;
 
     private LocalTime time;
 
@@ -57,20 +57,36 @@ public class Lecture extends BaseEntity{
     @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private Exam exam;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @Column(nullable = false, length = 20)
+    private String tag;
 
-    /*@OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<UserLecture> userLectureList = new ArrayList<>();
+    @Column(nullable = false, length = 100)
+    private String tutor;
 
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Liked> likedList = new ArrayList<>();
+    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag ){
+        this.name = name;
+        this.body = body;
+        this.curri = curri;
+        this.info = info;
+        this.level = level;
+        this.pNum = pNum;
+        this.time = time;
+        this.day = day;
+        this.startDate = startDate;
+        this.exam = exam;
+        this.category = category;
+        this.tag = tag;
+    }
 
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();*/
+    public void addCurPNum(){
+        this.cNum++;
+    }
+
+    public void subCurPNum(){
+        this.cNum--;
+    }
 }
