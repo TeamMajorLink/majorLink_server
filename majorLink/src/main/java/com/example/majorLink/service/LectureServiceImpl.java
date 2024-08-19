@@ -30,6 +30,7 @@ public class LectureServiceImpl implements LectureService {
     private final TutorLectureRepository tutorLectureRepository;
     private final TuteeLectureRepository tuteeLectureRepository;
     private final LikedRepository likedRepository;
+    private final NotificationService notificationService;
 
     // 강의 생성
     @Override
@@ -56,6 +57,7 @@ public class LectureServiceImpl implements LectureService {
                 .tag(request.getTag())
                 .tutor(user.getNickname())
                 .cNum(0)
+                .user(user)
                 .build();
 
         Lecture saveLecture = lectureRepository.save(lecture);
@@ -174,7 +176,14 @@ public class LectureServiceImpl implements LectureService {
 
         lecture.addCurPNum();
 
-        return tuteeLectureRepository.save(tuteeLecture);
+        TuteeLecture savedTuteeLecture = tuteeLectureRepository.save(tuteeLecture);
+
+        // 수강 신청 시 튜터에게 알림 전달
+        String msg = user.getNickname() + " 님으로 부터 수업 신청이 왔습니다.";
+        notificationService.send(user, lecture, msg);
+
+        return savedTuteeLecture;
+
     }
 
     // 강의 좋아요

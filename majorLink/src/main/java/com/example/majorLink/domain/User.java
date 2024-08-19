@@ -59,7 +59,7 @@ public class User extends BaseEntity{
     @Column(length = 40)
     private String favorite;
 
-    @Column(name = "learnPart", nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(name = "learnPart", columnDefinition = "VARCHAR(20)")
     private String learnPart;
 
     @Column(nullable = false,  columnDefinition = "INT DEFAULT 0")
