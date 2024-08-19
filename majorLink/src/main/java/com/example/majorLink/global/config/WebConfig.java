@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3004"
                 ) //프론트 테스트 url입니다.
                 .allowedMethods("POST", "GET", "DELETE", "PUT", "PATCH", "OPTIONS")
-                .allowedHeaders("*")
+                .allowedHeaders("Content-Type", "Authorization")
                 .allowCredentials(true);
     }
 }
