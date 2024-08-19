@@ -41,7 +41,7 @@ public class OAuthAttributes {
 
     public static OAuthAttributes ofNaver(Map<String, Object> response) {
         OAuthAttributes oAuthAttributes = new OAuthAttributes();
-//        oAuthAttributes.id = (String) response.get("id");
+        oAuthAttributes.id = (String) response.get("id");
 //        oAuthAttributes.email = (String) response.get("email");
 //        oAuthAttributes.username = (String) response.get("name");
 //        oAuthAttributes.phone = (String) response.get("phone");
