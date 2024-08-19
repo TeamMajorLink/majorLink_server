@@ -1,17 +1,17 @@
 package com.example.majorLink.controller;
 
 import com.example.majorLink.domain.User;
+import com.example.majorLink.dto.response.NotificationResponse;
 import com.example.majorLink.global.auth.AuthUser;
 import com.example.majorLink.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Parameter;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notification")
@@ -26,5 +26,15 @@ public class NotificationController {
             @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         User user = authUser.getUser();
         return notificationService.subscribe(user, lastEventId);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NotificationResponse>> getNotificationList(
+            @AuthenticationPrincipal AuthUser authUser) {
+        User user = authUser.getUser();
+
+        List<NotificationResponse> notificationResponse = notificationService.getNotificationList(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificationResponse);
     }
 }
