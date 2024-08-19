@@ -5,6 +5,8 @@ import com.example.majorLink.domain.enums.Exam;
 import com.example.majorLink.domain.enums.Level;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalTime;
 import java.util.Date;
@@ -66,6 +68,11 @@ public class Lecture extends BaseEntity{
 
     @Column(nullable = false, length = 100)
     private String tutor;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag ){
         this.name = name;
