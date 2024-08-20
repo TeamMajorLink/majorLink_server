@@ -27,7 +27,7 @@ public class ReviewResponseDTO {
         Long reviewId;
         String ownerNickname;
         int rate;
-        String title;
+        String lecture;
         LocalDateTime createdAt;
     }
 
@@ -38,7 +38,6 @@ public class ReviewResponseDTO {
     public static class ReviewDetails {
         String ownerNickname;
         int rate;
-        String title;
         String content;
         LocalDateTime createdAt;
     }

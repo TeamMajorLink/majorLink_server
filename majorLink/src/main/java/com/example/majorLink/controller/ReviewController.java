@@ -74,7 +74,7 @@ public class ReviewController {
                                 .reviewId(review.getId())
                                 .ownerNickname(review.getUser().getUsername())
                                 .createdAt(review.getCreatedAt())
-                                .title(review.getTitle())
+                                .lecture(review.getLecture().getName())
                                 .rate(review.getRate())
                                 .build())
                         .collect(Collectors.toList()))
@@ -94,7 +94,6 @@ public class ReviewController {
 
         return ReviewResponseDTO.ReviewDetails.builder()
                 .ownerNickname(review.getUser().getUsername())
-                .title(review.getTitle())
                 .rate(review.getRate())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())
