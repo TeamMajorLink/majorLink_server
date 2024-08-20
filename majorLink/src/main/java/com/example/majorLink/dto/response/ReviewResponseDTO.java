@@ -24,6 +24,7 @@ public class ReviewResponseDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReviewPreView {
+        Long reviewId;
         String ownerNickname;
         int rate;
         String title;
