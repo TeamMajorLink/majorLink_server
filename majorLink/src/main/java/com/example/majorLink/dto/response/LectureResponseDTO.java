@@ -24,6 +24,7 @@ public class LectureResponseDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class LecturePreView {
+        Long lectureId;
         String name;
         Integer cNum;
         Integer pNum;

@@ -64,7 +64,7 @@ public class LectureController {
         lectureService.DeleteLecture(user.getId(), lectureId);
     }
 
-    // 강의 list 조회 api
+    // 강의 목록 조회 api
     @GetMapping("/list")
     @ResponseBody
     // 스웨거 세팅 후 파라미터 등 설명 추가
@@ -74,6 +74,7 @@ public class LectureController {
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
                         .map(lecture -> LectureResponseDTO.LecturePreView.builder()
+                                .lectureId(lecture.getId())
                                 .name(lecture.getName())
                                 .cNum(lecture.getCNum())
                                 .pNum(lecture.getPNum())
