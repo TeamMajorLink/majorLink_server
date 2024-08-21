@@ -13,7 +13,7 @@ public interface ReviewService {
     Review updateReview(UUID userId, Long reviewId, ReviewRequestDTO request);
     void deleteReview(UUID userId, Long reviewId);
 
-    Page<Review> getReviewList(Long lectureId, Integer page);
+    Page<Review> getReviewList(Integer page);
 
     Review getReview(Long reviewId);
 }

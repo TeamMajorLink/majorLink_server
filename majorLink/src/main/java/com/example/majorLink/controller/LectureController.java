@@ -167,6 +167,7 @@ public class LectureController {
                             Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
 
                             return LectureResponseDTO.LecturePreView.builder()
+                                    .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
                                     .subCategory(lecture.getCategory().getSubCategory())
@@ -198,6 +199,7 @@ public class LectureController {
                             Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
 
                             return LectureResponseDTO.LecturePreView.builder()
+                                    .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
                                     .subCategory(lecture.getCategory().getSubCategory())
@@ -228,6 +230,7 @@ public class LectureController {
                             Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
 
                             return LectureResponseDTO.LecturePreView.builder()
+                                    .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
                                     .subCategory(lecture.getCategory().getSubCategory())
@@ -259,6 +262,7 @@ public class LectureController {
                             Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
 
                             return LectureResponseDTO.LecturePreView.builder()
+                                    .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
                                     .subCategory(lecture.getCategory().getSubCategory())

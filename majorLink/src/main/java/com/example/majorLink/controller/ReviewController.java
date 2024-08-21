@@ -72,9 +72,8 @@ public class ReviewController {
     // 리뷰 목록 조회하는 api
     @GetMapping("/list")
     @ResponseBody
-    public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
-                                                          @RequestParam(name = "page", defaultValue = "1") Integer page){
-        Page<Review> reviewList = reviewService.getReviewList(lectureId, page-1);
+    public ReviewResponseDTO.ReviewPreViewList getReviews(@RequestParam(name = "page", defaultValue = "1") Integer page){
+        Page<Review> reviewList = reviewService.getReviewList(page-1);
 
         return ReviewResponseDTO.ReviewPreViewList.builder()
                 .reviewList(reviewList.stream()
