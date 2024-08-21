@@ -5,9 +5,10 @@ import com.example.majorLink.dto.response.NotificationResponse;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface NotificationService {
-    SseEmitter subscribe(String userId, String lastEventId);
+    SseEmitter subscribe(UUID userId, String lastEventId);
     void send(User sender, Long lectureId, String content);
 
     // 전체 알림 조회
