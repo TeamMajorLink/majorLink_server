@@ -1,9 +1,11 @@
 package com.example.majorLink.controller;
 
+import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.User;
 import com.example.majorLink.dto.response.NotificationResponse;
 import com.example.majorLink.global.auth.AuthUser;
 import com.example.majorLink.global.jwt.JwtService;
+import com.example.majorLink.repository.LectureRepository;
 import com.example.majorLink.service.NotificationService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
+    private final LectureRepository lectureRepository;
     private final JwtService jwtService;
 
     /**
@@ -36,7 +39,7 @@ public class NotificationController {
     @GetMapping(value = "/subscribe/{X-AUTH-TOKEN}", produces = "text/event-stream")
     public SseEmitter subscribe(
             @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId,
-            @PathVariable("X-AUTH-TOKEN") String token // 경로 변수로 토큰을 받음
+            @PathVariable("X-AUTH-TOKEN") String token
     ) {
 
         // 토큰 유효성 검사
