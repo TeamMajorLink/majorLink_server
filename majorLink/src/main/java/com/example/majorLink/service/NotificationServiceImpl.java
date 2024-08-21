@@ -57,13 +57,13 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void send(User sender, Long lectureId, String content) {
-        Notification notification = notificationRepository.save(createNotification(sender, lectureId, content));
-        String userId = String.valueOf(sender.getId());
-
         Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(() -> new IllegalArgumentException("강의 정보가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
-        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByUserId(UUID.fromString(userId));
+        Notification notification = notificationRepository.save(createNotification(lecture.getUser(), lectureId, content));
+        UUID receiverId = lecture.getUser().getId();
+
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByUserId(receiverId);       // 알림 받는 사람 아이디
         sseEmitters.forEach(
                 (key, emitter) -> {
                     emitterRepository.saveEventCache(key, notification);
@@ -80,7 +80,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private Notification createNotification(User sender, Long lectureId, String content) {
-        String url = "/lecture/" + lectureId + "/details";
 
         Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(() -> new IllegalArgumentException("강의 정보가 없습니다."));
