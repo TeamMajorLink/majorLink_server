@@ -19,23 +19,30 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
-    // Last-Event-ID는 SSE 연결이 끊어졌을 경우, 클라이언트가 수신한 마지막 데이터 ID 값을 의미, 항상 존재 X -> false
-
     /**
      * 알림을 위한 구독 API
      * [GET] /notification/subscribe
-     * @param authUser
      * @param lastEventId
+     * @param userId
      * @return
      */
-    @GetMapping(value = "/subscribe", produces = "text/event-stream")
+    // Last-Event-ID는 SSE 연결이 끊어졌을 경우, 클라이언트가 수신한 마지막 데이터 ID 값을 의미, 항상 존재 X -> false
+    @GetMapping(value = "/subscribe/{X-AUTH-TOKEN}", produces = "text/event-stream")
     public SseEmitter subscribe(
-            @AuthenticationPrincipal AuthUser authUser,
-            @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        User user = authUser.getUser();
-        return notificationService.subscribe(user, lastEventId);
+            @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId,
+            @PathVariable("X-AUTH-TOKEN") String userId) {
+        return notificationService.subscribe(userId, lastEventId);
     }
 
+    // 수강 신청 시 튜터에게 알림 전달
+
+    /**
+     * 알림 전송 API
+     * [POST] /notification/{lectureId}
+     * @param lectureId
+     * @param authUser
+     * @return
+     */
     @PostMapping("/{lectureId}")
     public ResponseEntity<?> sendNotification(@PathVariable(name = "lectureId") Long lectureId,
                                               @AuthenticationPrincipal AuthUser authUser) {
@@ -46,11 +53,6 @@ public class NotificationController {
                 .build();
 
     }
-
-
-    // 수강 신청 시 튜터에게 알림 전달
-
-
 
     /**
      * 알림 전체 조회

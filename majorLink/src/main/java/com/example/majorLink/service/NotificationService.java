@@ -7,7 +7,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.List;
 
 public interface NotificationService {
-    SseEmitter subscribe(User user, String lastEventId);
+    SseEmitter subscribe(String userId, String lastEventId);
     void send(User sender, Long lectureId, String content);
 
     // 전체 알림 조회
