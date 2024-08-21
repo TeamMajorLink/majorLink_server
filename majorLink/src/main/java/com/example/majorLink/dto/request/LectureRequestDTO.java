@@ -29,4 +29,5 @@ public class LectureRequestDTO {
     Long categoryId;
     String tag;
     Integer num; // 정원
+    String imageUrl;
 }

@@ -28,6 +28,7 @@ public class LectureResponseDTO {
         String name;
         Integer cNum;
         Integer pNum;
+        String imageUrl;
         String mainCategory;
         String subCategory;
     }
@@ -52,6 +53,7 @@ public class LectureResponseDTO {
         String tutor;
         String mainCategory;
         String subCategory;
+        String imageUrl;
     }
 
     @Builder

@@ -22,7 +22,6 @@ public class Review extends BaseEntity{
 
     @Column(nullable = false)
     private int rate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
