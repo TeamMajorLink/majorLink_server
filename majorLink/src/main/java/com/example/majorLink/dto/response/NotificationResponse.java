@@ -14,6 +14,6 @@ public class NotificationResponse {
     private String receiver;
     private String sender;
     private String content;
-    private String url;
+    private String lectureId;
     private String createdAt;
 }
