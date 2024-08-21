@@ -16,6 +16,10 @@ public class ReviewResponseDTO {
     @NoArgsConstructor
     public static class CreateReview {
         Long reviewId;
+        String ownerNickname;
+        String content;
+        int rate;
+        String lectue;
         LocalDateTime createdAt;
     }
 
@@ -62,6 +66,10 @@ public class ReviewResponseDTO {
     @NoArgsConstructor
     public static class UpdateReview {
         Long reviewId;
+        String ownerNickname;
+        String content;
+        int rate;
+        String lectue;
         LocalDateTime updatedAt;
     }
 }

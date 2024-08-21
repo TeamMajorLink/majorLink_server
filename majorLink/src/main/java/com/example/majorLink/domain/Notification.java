@@ -1,14 +1,9 @@
 package com.example.majorLink.domain;
 
-import com.example.majorLink.domain.enums.CheckStatus;
-import com.example.majorLink.domain.mapping.UserNotification;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,9 +18,6 @@ public class Notification extends BaseEntity{
 
     @Column(nullable = false, length = 1000)
     private String content;
-
-    @Column(nullable = false)
-    private String url;
 
     // receiver 삭제 시 연관관계 동시 삭제
     @OnDelete(action = OnDeleteAction.CASCADE)

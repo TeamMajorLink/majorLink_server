@@ -32,6 +32,10 @@ public class ReviewController {
 
         return ReviewResponseDTO.CreateReview.builder()
                 .reviewId(review.getId())
+                .ownerNickname(review.getUser().getNickname())
+                .lectue(review.getLecture().getName())
+                .content(review.getContent())
+                .rate(review.getRate())
                 .createdAt(review.getCreatedAt())
                 .build();
     }
@@ -47,6 +51,10 @@ public class ReviewController {
 
         return ReviewResponseDTO.UpdateReview.builder()
                 .reviewId(review.getId())
+                .ownerNickname(review.getUser().getNickname())
+                .lectue(review.getLecture().getName())
+                .content(review.getContent())
+                .rate(review.getRate())
                 .updatedAt(review.getUpdatedAt())
                 .build();
     }
@@ -62,7 +70,7 @@ public class ReviewController {
     }
 
     // 리뷰 목록 조회하는 api
-    @GetMapping("/{lectureId}")
+    @GetMapping("/list")
     @ResponseBody
     public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
                                                           @RequestParam(name = "page", defaultValue = "1") Integer page){
