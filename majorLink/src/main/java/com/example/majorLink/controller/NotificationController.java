@@ -36,6 +36,22 @@ public class NotificationController {
         return notificationService.subscribe(user, lastEventId);
     }
 
+    @PostMapping("/{lectureId}")
+    public ResponseEntity<?> sendNotification(@PathVariable(name = "lectureId") Long lectureId,
+                                              @AuthenticationPrincipal AuthUser authUser) {
+        User user = authUser.getUser();
+        String msg = user.getNickname() + " 님으로 부터 수업 신청이 왔습니다.";
+        notificationService.send(user, lectureId, msg);
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+
+    }
+
+
+    // 수강 신청 시 튜터에게 알림 전달
+
+
+
     /**
      * 알림 전체 조회
      * [GET] /notification

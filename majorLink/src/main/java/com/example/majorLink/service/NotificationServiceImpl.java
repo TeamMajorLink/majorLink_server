@@ -4,6 +4,7 @@ import com.example.majorLink.domain.*;
 import com.example.majorLink.dto.response.NotificationResponse;
 import com.example.majorLink.repository.EmitterRepository;
 import com.example.majorLink.repository.EmitterRepositoryImpl;
+import com.example.majorLink.repository.LectureRepository;
 import com.example.majorLink.repository.NotificationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,7 @@ public class NotificationServiceImpl implements NotificationService {
     private static final Long DEFAULT_TIMEOUT = 5L * 1000 * 60 * 60; // 5시간
     private final EmitterRepository emitterRepository = new EmitterRepositoryImpl();
     private final NotificationRepository notificationRepository;
+    private final LectureRepository lectureRepository;
 
     @Override
     public SseEmitter subscribe(User user, String lastEventId) {
@@ -53,9 +56,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void send(User sender, Lecture lecture, String content) {
-        Notification notification = notificationRepository.save(createNotification(sender, lecture, content));
+    public void send(User sender, Long lectureId, String content) {
+        Notification notification = notificationRepository.save(createNotification(sender, lectureId, content));
         String userId = String.valueOf(sender.getId());
+
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("강의 정보가 없습니다."));
 
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByUserId(UUID.fromString(userId));
         sseEmitters.forEach(
@@ -73,8 +79,11 @@ public class NotificationServiceImpl implements NotificationService {
         );
     }
 
-    private Notification createNotification(User sender, Lecture lecture, String content) {
-        String url = "/lecture/" + lecture.getId() + "/details";
+    private Notification createNotification(User sender, Long lectureId, String content) {
+        String url = "/lecture/" + lectureId + "/details";
+
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("강의 정보가 없습니다."));
 
         return Notification.builder()
                 .sender(sender)
