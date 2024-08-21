@@ -16,8 +16,6 @@ public class Review extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String title;
 
     @Column(nullable = false, length = 1000)
     private String content;
@@ -41,8 +39,8 @@ public class Review extends BaseEntity{
         this.lecture = lecture;
     }
 
-    public void updateReview(String title, String content, int rate){
-        this.title = title;
+    public void updateReview(String content, int rate){
+
         this.content = content;
         this.rate = rate;
     }

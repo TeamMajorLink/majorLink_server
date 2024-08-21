@@ -61,7 +61,7 @@ public class ReviewController {
         reviewService.deleteReview(user.getId(), reviewId);
     }
 
-    // 리뷰 조회하는 api
+    // 리뷰 목록 조회하는 api
     @GetMapping("/{lectureId}")
     @ResponseBody
     public ReviewResponseDTO.ReviewPreViewList getReviews(@PathVariable(name = "lectureId") Long lectureId,
@@ -71,9 +71,10 @@ public class ReviewController {
         return ReviewResponseDTO.ReviewPreViewList.builder()
                 .reviewList(reviewList.stream()
                         .map(review -> ReviewResponseDTO.ReviewPreView.builder()
+                                .reviewId(review.getId())
                                 .ownerNickname(review.getUser().getUsername())
                                 .createdAt(review.getCreatedAt())
-                                .title(review.getTitle())
+                                .lecture(review.getLecture().getName())
                                 .rate(review.getRate())
                                 .build())
                         .collect(Collectors.toList()))
@@ -93,7 +94,6 @@ public class ReviewController {
 
         return ReviewResponseDTO.ReviewDetails.builder()
                 .ownerNickname(review.getUser().getUsername())
-                .title(review.getTitle())
                 .rate(review.getRate())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())

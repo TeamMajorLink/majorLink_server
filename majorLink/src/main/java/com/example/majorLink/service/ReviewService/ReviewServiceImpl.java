@@ -28,7 +28,6 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public Review createReview(UUID userId, Long lectureId, ReviewRequestDTO request) {
         Review review = Review.builder()
-                .title(request.getTitle())
                 .rate(request.getRate())
                 .content(request.getContent())
                 .build();
@@ -45,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService{
         User user = userRepository.findById(userId).get();
         Review review = reviewRepository.findById(reviewId).get();
 
-        review.updateReview(request.getTitle(), request.getContent(), request.getRate());
+        review.updateReview(request.getContent(), request.getRate());
 
         if (!review.getUser().getId().equals(user.getId())){
             throw new IllegalArgumentException("Invalid user ID");

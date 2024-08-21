@@ -57,6 +57,9 @@ dependencies {
 
 	// iamport 결제
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
+
+	//web rtc 화상채팅
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 tasks.named('test') {
