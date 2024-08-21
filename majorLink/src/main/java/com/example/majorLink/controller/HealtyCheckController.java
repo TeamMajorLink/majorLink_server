@@ -1,5 +1,8 @@
 package com.example.majorLink.controller;
 
+import com.example.majorLink.domain.User;
+import com.example.majorLink.global.auth.AuthUser;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealtyCheckController {
 
     @GetMapping("/health")
-    public String checkHealth() {
-        return "im healty";
+    public String checkHealth(@AuthenticationPrincipal AuthUser authUser) {
+        User user = authUser.getUser();
+        return "im healty" + user;
     }
 }
