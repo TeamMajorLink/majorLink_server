@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NotificationService {
     SseEmitter subscribe(User user, String lastEventId);
-    void send(User sender, Lecture lecture, String content);
+    void send(User sender, Long lectureId, String content);
 
     // 전체 알림 조회
     List<NotificationResponse> getNotificationList(User user);
