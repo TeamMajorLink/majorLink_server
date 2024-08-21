@@ -31,6 +31,7 @@ public class LectureResponseDTO {
         String imageUrl;
         String mainCategory;
         String subCategory;
+        String avgRate;
     }
 
     @Builder
@@ -54,6 +55,7 @@ public class LectureResponseDTO {
         String mainCategory;
         String subCategory;
         String imageUrl;
+        String avgRate;
     }
 
     @Builder
