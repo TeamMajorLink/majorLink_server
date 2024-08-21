@@ -30,7 +30,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final LectureRepository lectureRepository;
 
     @Override
-    public SseEmitter subscribe(String userId, String lastEventId) {
+    public SseEmitter subscribe(UUID userId, String lastEventId) {
         // 토큰을 고유 식별자로 사용하여 emitterId를 생성합니다.
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
@@ -47,7 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
         sendToClient(emitter, emitterId, "EventStream Create. [userId = " + userId + "]");
 
         if (!lastEventId.isEmpty()) {
-            Map<String, Object> events = emitterRepository.findAllEventCacheStartWithByUserId(UUID.fromString(userId));
+            Map<String, Object> events = emitterRepository.findAllEventCacheStartWithByUserId(userId);
             events.entrySet().stream()
                     .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
                     .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
