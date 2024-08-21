@@ -57,6 +57,7 @@ public class LectureServiceImpl implements LectureService {
                 .tag(request.getTag())
                 .tutor(user.getNickname())
                 .cNum(0)
+                .imgUrl(request.getImageUrl())
                 .user(user)
                 .build();
 
@@ -108,7 +109,8 @@ public class LectureServiceImpl implements LectureService {
                 request.getStartDate(),
                 request.getExam(),
                 category,
-                request.getTag()
+                request.getTag(),
+                request.getImageUrl()
         );
 
         // Lecture 엔티티 저장 (변경 감지)

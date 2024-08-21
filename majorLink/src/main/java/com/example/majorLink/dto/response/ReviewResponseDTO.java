@@ -31,6 +31,7 @@ public class ReviewResponseDTO {
         Long reviewId;
         String ownerNickname;
         int rate;
+        String content;
         String lecture;
         LocalDateTime createdAt;
     }

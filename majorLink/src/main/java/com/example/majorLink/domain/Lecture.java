@@ -68,13 +68,14 @@ public class Lecture extends BaseEntity{
 
     @Column(nullable = false, length = 100)
     private String tutor;
+    private String imgUrl;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag ){
+    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag, String imgUrl ){
         this.name = name;
         this.body = body;
         this.curri = curri;
@@ -87,6 +88,7 @@ public class Lecture extends BaseEntity{
         this.exam = exam;
         this.category = category;
         this.tag = tag;
+        this.imgUrl = imgUrl;
     }
 
     public void addCurPNum(){

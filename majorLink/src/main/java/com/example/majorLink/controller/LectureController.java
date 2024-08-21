@@ -6,6 +6,7 @@ import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
 import com.example.majorLink.dto.response.LectureResponseDTO;
 import com.example.majorLink.global.auth.AuthUser;
+import com.example.majorLink.repository.ReviewRepository;
 import com.example.majorLink.service.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class LectureController {
 
     private final LectureService lectureService;
+    private final ReviewRepository reviewRepository;
 
     // 강의 생성 api
     @PostMapping("/create")
@@ -73,14 +75,21 @@ public class LectureController {
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
-                        .map(lecture -> LectureResponseDTO.LecturePreView.builder()
-                                .lectureId(lecture.getId())
-                                .name(lecture.getName())
-                                .cNum(lecture.getCNum())
-                                .pNum(lecture.getPNum())
-                                .mainCategory(lecture.getCategory().getMainCategory())
-                                .subCategory(lecture.getCategory().getSubCategory())
-                                .build())
+                        .map(lecture -> {
+
+                            Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
+                            return LectureResponseDTO.LecturePreView.builder()
+                                    .lectureId(lecture.getId())
+                                    .name(lecture.getName())
+                                    .cNum(lecture.getCNum())
+                                    .pNum(lecture.getPNum())
+                                    .imageUrl(lecture.getImgUrl())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .avgRate(String.format("%.1f", avgRate))
+                                    .build();
+                        })
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
                 .totalPage(lectureList.getTotalPages())
@@ -96,6 +105,8 @@ public class LectureController {
     public LectureResponseDTO.LectureDetails getLecture(@PathVariable(name = "lectureId") Long lectureId){
         Lecture lecture = lectureService.getLecture(lectureId);
 
+        Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
         return LectureResponseDTO.LectureDetails.builder()
                 .name(lecture.getName())
                 .body(lecture.getBody())
@@ -110,8 +121,10 @@ public class LectureController {
                 .exam(lecture.getExam().name())
                 .tag(lecture.getTag())
                 .tutor(lecture.getTutor())
+                .imageUrl(lecture.getImgUrl())
                 .mainCategory(lecture.getCategory().getMainCategory())
                 .subCategory(lecture.getCategory().getSubCategory())
+                .avgRate(String.format("%.1f", avgRate))
                 .build();
     }
 
@@ -146,16 +159,23 @@ public class LectureController {
     public LectureResponseDTO.LecturePreViewList getMostLikedLectures(@RequestParam(name = "page", defaultValue = "1") Integer page){
         Page<Lecture> lectureList = lectureService.getMostLikedLecture(page-1);
 
+
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
-                        .map(lecture -> LectureResponseDTO.LecturePreView.builder()
-                                .lectureId(lecture.getId())
-                                .name(lecture.getName())
-                                .mainCategory(lecture.getCategory().getMainCategory())
-                                .subCategory(lecture.getCategory().getSubCategory())
-                                .cNum(lecture.getCNum())
-                                .pNum(lecture.getPNum())
-                                .build())
+                        .map(lecture -> {
+
+                            Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
+                            return LectureResponseDTO.LecturePreView.builder()
+                                    .name(lecture.getName())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .cNum(lecture.getCNum())
+                                    .pNum(lecture.getPNum())
+                                    .imageUrl(lecture.getImgUrl())
+                                    .avgRate(String.format("%.1f", avgRate))
+                                    .build();
+                        })
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
                 .totalPage(lectureList.getTotalPages())
@@ -173,14 +193,20 @@ public class LectureController {
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
-                        .map(lecture -> LectureResponseDTO.LecturePreView.builder()
-                                .lectureId(lecture.getId())
-                                .name(lecture.getName())
-                                .mainCategory(lecture.getCategory().getMainCategory())
-                                .subCategory(lecture.getCategory().getSubCategory())
-                                .cNum(lecture.getCNum())
-                                .pNum(lecture.getPNum())
-                                .build())
+                        .map(lecture -> {
+
+                            Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
+                            return LectureResponseDTO.LecturePreView.builder()
+                                    .name(lecture.getName())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .cNum(lecture.getCNum())
+                                    .pNum(lecture.getPNum())
+                                    .imageUrl(lecture.getImgUrl())
+                                    .avgRate(String.format("%.1f", avgRate))
+                                    .build();
+                        })
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
                 .totalPage(lectureList.getTotalPages())
@@ -198,14 +224,19 @@ public class LectureController {
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
-                        .map(lecture -> LectureResponseDTO.LecturePreView.builder()
-                                .lectureId(lecture.getId())
-                                .name(lecture.getName())
-                                .mainCategory(lecture.getCategory().getMainCategory())
-                                .subCategory(lecture.getCategory().getSubCategory())
-                                .cNum(lecture.getCNum())
-                                .pNum(lecture.getPNum())
-                                .build())
+                        .map(lecture -> {
+                            Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
+                            return LectureResponseDTO.LecturePreView.builder()
+                                    .name(lecture.getName())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .cNum(lecture.getCNum())
+                                    .pNum(lecture.getPNum())
+                                    .imageUrl(lecture.getImgUrl())
+                                    .avgRate(String.format("%.1f", avgRate))
+                                    .build();
+                        })
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
                 .totalPage(lectureList.getTotalPages())
@@ -224,14 +255,19 @@ public class LectureController {
 
         return LectureResponseDTO.LecturePreViewList.builder()
                 .lectureList(lectureList.stream()
-                        .map(lecture -> LectureResponseDTO.LecturePreView.builder()
-                                .lectureId(lecture.getId())
-                                .name(lecture.getName())
-                                .mainCategory(lecture.getCategory().getMainCategory())
-                                .subCategory(lecture.getCategory().getSubCategory())
-                                .cNum(lecture.getCNum())
-                                .pNum(lecture.getPNum())
-                                .build())
+                        .map(lecture -> {
+                            Double avgRate = reviewRepository.findAverageRatingByLectureId(lecture.getId());
+
+                            return LectureResponseDTO.LecturePreView.builder()
+                                    .name(lecture.getName())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .cNum(lecture.getCNum())
+                                    .pNum(lecture.getPNum())
+                                    .imageUrl(lecture.getImgUrl())
+                                    .avgRate(String.format("%.1f", avgRate))
+                                    .build();
+                        })
                         .collect(Collectors.toList()))
                 .listSize(lectureList.getNumberOfElements())
                 .totalPage(lectureList.getTotalPages())

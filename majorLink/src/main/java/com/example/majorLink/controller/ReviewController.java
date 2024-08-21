@@ -83,6 +83,7 @@ public class ReviewController {
                                 .ownerNickname(review.getUser().getUsername())
                                 .createdAt(review.getCreatedAt())
                                 .lecture(review.getLecture().getName())
+                                .content(review.getContent())
                                 .rate(review.getRate())
                                 .build())
                         .collect(Collectors.toList()))
