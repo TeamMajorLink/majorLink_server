@@ -19,9 +19,6 @@ public class Notification extends BaseEntity{
     @Column(nullable = false, length = 1000)
     private String content;
 
-    @Column(nullable = false)
-    private String url;
-
     // receiver 삭제 시 연관관계 동시 삭제
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)

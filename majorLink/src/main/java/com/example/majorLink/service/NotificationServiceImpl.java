@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
                     sendToClient(emitter, key, NotificationResponse.builder()
                             .id(notification.getId())
                             .content(String.valueOf(notification.getContent()))
-                            .url(String.valueOf(notification.getUrl()))
+                            .lectureId(String.valueOf(lectureId))
                             .sender(sender.getNickname())
                             .receiver(lecture.getUser().getNickname())
                             .createdAt(String.valueOf(notification.getCreatedAt()))
@@ -90,7 +90,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .receiver(lecture.getUser())
                 .content(content)
                 .lecture(lecture)
-                .url(url)
                 .build();
     }
 
@@ -119,7 +118,7 @@ public class NotificationServiceImpl implements NotificationService {
                         .sender(notification.getSender().getNickname())
                         .receiver(notification.getReceiver().getNickname())
                         .content(notification.getContent())
-                        .url(notification.getUrl())
+                        .lectureId(String.valueOf(notification.getLecture().getId()))
                         .createdAt(String.valueOf(notification.getCreatedAt()))
                         .build())
                 .collect(Collectors.toList());
