@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +31,15 @@ public class SecurityConfig {
         http
                 .httpBasic(AbstractHttpConfigurer::disable) // http form login 비활성화
                 .csrf(AbstractHttpConfigurer::disable) // csrf 필터 비활성화 -> cookies 사용하지 않으므로 위험 없음
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:8080"));
+                            config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
+                            config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Auth-Token")); // 허용할 헤더 설정
+                            return config;
+                        })
+                )
                 .formLogin(AbstractHttpConfigurer::disable) // basic login 비활성화
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session 사용 X
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
