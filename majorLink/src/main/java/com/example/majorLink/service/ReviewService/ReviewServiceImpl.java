@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -68,12 +69,11 @@ public class ReviewServiceImpl implements ReviewService{
 
     // 리뷰 페이징
     @Override
-    public Page<Review> getReviewList(Long lectureId, Integer page) {
-        Lecture lecture = lectureRepository.findById(lectureId).get();
+    public Page<Review> getReviewList(Integer page) {
 
-        Page<Review> reviewPage = reviewRepository.findAllByLecture(lecture, PageRequest.of(page, 10));
+        Pageable pageable = PageRequest.of(page, 10);
 
-        return reviewPage;
+        return reviewRepository.findAll(pageable);
     }
 
     // 리뷰 내용 조회
