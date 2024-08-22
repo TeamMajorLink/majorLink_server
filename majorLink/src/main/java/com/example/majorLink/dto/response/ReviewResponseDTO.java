@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ReviewResponseDTO {
@@ -20,7 +20,7 @@ public class ReviewResponseDTO {
         String content;
         int rate;
         String lectue;
-        LocalDateTime createdAt;
+        LocalDate createdAt;
     }
 
     @Builder
@@ -33,7 +33,7 @@ public class ReviewResponseDTO {
         int rate;
         String content;
         String lecture;
-        LocalDateTime createdAt;
+        LocalDate createdAt;
     }
 
     @Builder
@@ -44,7 +44,7 @@ public class ReviewResponseDTO {
         String ownerNickname;
         int rate;
         String content;
-        LocalDateTime createdAt;
+        LocalDate createdAt;
     }
 
     @Builder
@@ -70,6 +70,6 @@ public class ReviewResponseDTO {
         String content;
         int rate;
         String lectue;
-        LocalDateTime updatedAt;
+        LocalDate updatedAt;
     }
 }
