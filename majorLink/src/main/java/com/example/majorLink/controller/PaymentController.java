@@ -8,7 +8,7 @@ import com.example.majorLink.dto.request.ProductOrderRequestDTO;
 import com.example.majorLink.dto.response.PaymentResponseDTO;
 import com.example.majorLink.dto.response.ProductOrderResponseDTO;
 import com.example.majorLink.global.auth.AuthUser;
-import com.example.majorLink.service.PaymentService.PaymentServiceImpl;
+import com.example.majorLink.service.PaymentService.PaymentService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.io.IOException;
 @RequestMapping("/payment")
 public class PaymentController {
 
-    private final PaymentServiceImpl paymentService;
+    private final PaymentService paymentService;
 
     // 결제 요청
     @PostMapping("/order")

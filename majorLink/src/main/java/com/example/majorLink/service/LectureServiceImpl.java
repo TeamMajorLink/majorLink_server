@@ -7,6 +7,7 @@ import com.example.majorLink.domain.mapping.Liked;
 import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.domain.mapping.TutorLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
+import com.example.majorLink.dto.response.LectureResponseDTO;
 import com.example.majorLink.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -242,15 +244,12 @@ public class LectureServiceImpl implements LectureService {
         return lectureRepository.orderByCategoryId(categoryId, PageRequest.of(page, 10));
     }
 
-    // 메인 카테고리 조회
-    public List<String> getMainCategory() {
-        return categoryRepository.findMainCategory();
-    }
+    // 카테고리 조회
+    public List<LectureResponseDTO.CategoryResponseDTO> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
 
-    // 카테고리 ID 조회
-    public Long getCategoryId(String mainCategory) {
-        Category category = categoryRepository.findByMainCategory(mainCategory)
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
-        return category.getId();
+        return categories.stream()
+                .map(category -> new LectureResponseDTO.CategoryResponseDTO(category.getId(), category.getMainCategory()))
+                .collect(Collectors.toList());
     }
 }
