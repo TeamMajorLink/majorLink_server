@@ -11,5 +11,6 @@ public class PaymentRequestDTO {
 
     private String impUid;
     private String merchantUid;
+    private BigDecimal amount;
 
 }
