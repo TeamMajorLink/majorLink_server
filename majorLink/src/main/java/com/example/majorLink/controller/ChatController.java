@@ -90,7 +90,7 @@ public class ChatController {
     public List<ChatmessageResponseDTO> getChatHistory(@PathVariable Long roomId) {
         return chatService.getChatMessageById(roomId).stream().map(chatMessage -> ChatmessageResponseDTO.builder()
                 .id(chatMessage.getId())
-                .senderUsername(chatMessage.getSender().getUsername())
+                .name(chatMessage.getSender().getUsername())
                 .content(chatMessage.getContent())
                 .chatroomId(chatMessage.getChatRoom().getId())
                 .build())

@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ChatmessageResponseDTO {
         private Long id;
         private String content;
-        private String senderUsername;
+        private String name;
         private Long chatroomId;
 
 }
