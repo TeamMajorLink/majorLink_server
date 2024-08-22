@@ -1,5 +1,6 @@
 package com.example.majorLink.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,10 @@ import java.util.UUID;
 public class ChatmessageResponseDTO {
         private Long id;
         private String content;
+
+        @JsonProperty("name")
         private String name;
+
         private Long chatroomId;
 
 }

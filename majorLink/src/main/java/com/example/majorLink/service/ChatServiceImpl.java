@@ -32,12 +32,9 @@ public class ChatServiceImpl implements ChatService{
     public ChatMessage saveChatMessage(ChatMessage chatMessage, User user) {
         // 로그 추가
         System.out.println("User found: " + user);
-
         chatMessage.setUser(user);
-
         // 로그 추가
         System.out.println("Saving chat message: " + chatMessage);
-
         return chatMessageRepository.save(chatMessage);
     }
 
