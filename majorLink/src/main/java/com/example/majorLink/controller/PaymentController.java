@@ -37,6 +37,8 @@ public class PaymentController {
                 .product(String.valueOf(productOrder.getProduct()))
                 .merchantUid(productOrder.getMerchantUid())
                 .amount(productOrder.getAmount())
+                .email(user.getEmail())
+                .name(user.getUsername())
                 .build();
     }
 

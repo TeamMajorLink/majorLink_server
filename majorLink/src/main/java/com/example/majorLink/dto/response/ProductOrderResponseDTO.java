@@ -16,4 +16,6 @@ public class ProductOrderResponseDTO {
     private String product;
     private String merchantUid;
     private BigDecimal amount;
+    private String email;
+    private String name;
 }
