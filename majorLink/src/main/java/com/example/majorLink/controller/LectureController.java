@@ -86,7 +86,7 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .avgRate(String.format("%.1f", avgRate))
                                     .build();
                         })
@@ -123,7 +123,7 @@ public class LectureController {
                 .tutor(lecture.getTutor())
                 .imageUrl(lecture.getImgUrl())
                 .mainCategory(lecture.getCategory().getMainCategory())
-                .subCategory(lecture.getCategory().getSubCategory())
+                .subCategory(lecture.getSubCategory())
                 .avgRate(String.format("%.1f", avgRate))
                 .build();
     }
@@ -170,7 +170,7 @@ public class LectureController {
                                     .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .cNum(lecture.getCNum())
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
@@ -202,7 +202,7 @@ public class LectureController {
                                     .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .cNum(lecture.getCNum())
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
@@ -233,7 +233,7 @@ public class LectureController {
                                     .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .cNum(lecture.getCNum())
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
@@ -265,7 +265,7 @@ public class LectureController {
                                     .lectureId(lecture.getId())
                                     .name(lecture.getName())
                                     .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getCategory().getSubCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .cNum(lecture.getCNum())
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
@@ -290,20 +290,10 @@ public class LectureController {
                 .build();
     }
 
-    // 서브 카테고리 조회 api
-    @GetMapping("/categories/sub")
-    @ResponseBody
-    public LectureResponseDTO.SubCategory getSubCategory(@RequestParam(name = "mainCategory") String mainCategory) {
-        return LectureResponseDTO.SubCategory.builder()
-                .subCategoryList(lectureService.getSubCategory(mainCategory))
-                .build();
-    }
-
     // 카테고리 id 조회 api
     @GetMapping("/categories/id")
     @ResponseBody
-    public Long getCategoryId(@RequestParam(name = "mainCategory") String mainCategory,
-                              @RequestParam(name = "subCategory") String subCategory) {
-        return lectureService.getCategoryId(mainCategory, subCategory);
+    public Long getCategoryId(@RequestParam(name = "mainCategory") String mainCategory) {
+        return lectureService.getCategoryId(mainCategory);
     }
 }

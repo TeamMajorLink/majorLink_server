@@ -54,6 +54,7 @@ public class LectureServiceImpl implements LectureService {
                 .startDate(request.getStartDate())
                 .exam(request.getExam())
                 .category(category)
+                .subCategory(request.getSubCategory())
                 .tag(request.getTag())
                 .tutor(user.getNickname())
                 .cNum(0)
@@ -109,6 +110,7 @@ public class LectureServiceImpl implements LectureService {
                 request.getStartDate(),
                 request.getExam(),
                 category,
+                request.getSubCategory(),
                 request.getTag(),
                 request.getImageUrl()
         );
@@ -245,14 +247,9 @@ public class LectureServiceImpl implements LectureService {
         return categoryRepository.findMainCategory();
     }
 
-    // 서브 카테고리 조회
-    public List<String> getSubCategory(String mainCategory) {
-        return categoryRepository.findSubCategory(mainCategory);
-    }
-
     // 카테고리 ID 조회
-    public Long getCategoryId(String mainCategory, String subCategory) {
-        Category category = categoryRepository.findByMainCategoryAndSubCategory(mainCategory, subCategory)
+    public Long getCategoryId(String mainCategory) {
+        Category category = categoryRepository.findByMainCategory(mainCategory)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         return category.getId();
     }

@@ -64,6 +64,9 @@ public class Lecture extends BaseEntity{
     private Category category;
 
     @Column(nullable = false, length = 20)
+    private String subCategory;
+
+    @Column(nullable = false, length = 20)
     private String tag;
 
     @Column(nullable = false, length = 100)
@@ -75,7 +78,7 @@ public class Lecture extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String tag, String imgUrl ){
+    public void updateLecture(String name, String body, int curri, String info, Level level, int pNum, LocalTime time, Day day, Date startDate, Exam exam, Category category, String subCategory, String tag, String imgUrl ){
         this.name = name;
         this.body = body;
         this.curri = curri;
@@ -87,6 +90,7 @@ public class Lecture extends BaseEntity{
         this.startDate = startDate;
         this.exam = exam;
         this.category = category;
+        this.subCategory = subCategory;
         this.tag = tag;
         this.imgUrl = imgUrl;
     }

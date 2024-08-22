@@ -27,6 +27,7 @@ public class LectureRequestDTO {
     Date startDate;
     Exam exam; // 시험 유무
     Long categoryId;
+    String subCategory;
     String tag;
     Integer num; // 정원
     String imageUrl;
