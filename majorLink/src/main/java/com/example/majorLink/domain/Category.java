@@ -17,7 +17,4 @@ public class Category extends BaseEntity{
     @Column(nullable = false, length = 20)
     private String mainCategory;
 
-    @Column(nullable = false, length = 20)
-    private String subCategory;
-
 }

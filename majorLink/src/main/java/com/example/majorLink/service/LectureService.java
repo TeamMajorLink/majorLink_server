@@ -26,7 +26,6 @@ public interface LectureService {
     Page<Lecture> getLectureByCategory(Integer page, Long categoryId);
 
     List<String> getMainCategory();
-    List<String> getSubCategory(String mainCategory);
 
-    Long getCategoryId(String mainCategory, String subCategory);
+    Long getCategoryId(String mainCategory);
 }

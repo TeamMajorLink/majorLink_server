@@ -13,8 +13,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT DISTINCT c.mainCategory FROM Category c")
     List<String> findMainCategory();
 
-    @Query("SELECT c.subCategory FROM Category c WHERE c.mainCategory = :mainCategory")
-    List<String> findSubCategory(String mainCategory);
-
-    Optional<Category> findByMainCategoryAndSubCategory(String mainCategory, String subCategory);
+    Optional<Category> findByMainCategory(String mainCategory);
 }
