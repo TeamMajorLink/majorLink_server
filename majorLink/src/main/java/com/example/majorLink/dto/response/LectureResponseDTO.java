@@ -93,15 +93,16 @@ public class LectureResponseDTO {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MainCategory {
-        List<String> mainCategoryList;
+    public static class CategoryResponseDTO {
+        Long categoryId;
+        String mainCategory;
     }
 
     @Builder
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class SubCategory {
-        List<String> subCategoryList;
+    public static class CategoryList {
+        List<CategoryResponseDTO> categoryList;
     }
 }

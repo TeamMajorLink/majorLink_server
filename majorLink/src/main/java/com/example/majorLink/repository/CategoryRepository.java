@@ -10,8 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query("SELECT DISTINCT c.mainCategory FROM Category c")
-    List<String> findMainCategory();
-
-    Optional<Category> findByMainCategory(String mainCategory);
 }

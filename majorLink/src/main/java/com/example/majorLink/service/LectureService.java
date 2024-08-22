@@ -3,6 +3,7 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
+import com.example.majorLink.dto.response.LectureResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -25,7 +26,5 @@ public interface LectureService {
     Page<Lecture> getMostRecruitedLecture(Integer page);
     Page<Lecture> getLectureByCategory(Integer page, Long categoryId);
 
-    List<String> getMainCategory();
-
-    Long getCategoryId(String mainCategory);
+    List<LectureResponseDTO.CategoryResponseDTO> getAllCategories();
 }

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -281,19 +282,14 @@ public class LectureController {
                 .build();
     }
 
-    // 메인 카테고리 조회 api
-    @GetMapping("/categories/main")
+    // 카테고리 조회 api
+    @GetMapping("/categories")
     @ResponseBody
-    public LectureResponseDTO.MainCategory getMainCategory() {
-        return LectureResponseDTO.MainCategory.builder()
-                .mainCategoryList(lectureService.getMainCategory())
-                .build();
-    }
+    public LectureResponseDTO.CategoryList getCategoryList() {
+        List<LectureResponseDTO.CategoryResponseDTO> categories = lectureService.getAllCategories();
 
-    // 카테고리 id 조회 api
-    @GetMapping("/categories/id")
-    @ResponseBody
-    public Long getCategoryId(@RequestParam(name = "mainCategory") String mainCategory) {
-        return lectureService.getCategoryId(mainCategory);
+        return LectureResponseDTO.CategoryList.builder()
+                .categoryList(categories)
+                .build();
     }
 }
