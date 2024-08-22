@@ -36,7 +36,7 @@ public class ReviewController {
                 .lectue(review.getLecture().getName())
                 .content(review.getContent())
                 .rate(review.getRate())
-                .createdAt(review.getCreatedAt())
+                .createdAt(review.getCreatedAt().toLocalDate())
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class ReviewController {
                 .lectue(review.getLecture().getName())
                 .content(review.getContent())
                 .rate(review.getRate())
-                .updatedAt(review.getUpdatedAt())
+                .updatedAt(review.getUpdatedAt().toLocalDate())
                 .build();
     }
 
@@ -80,7 +80,7 @@ public class ReviewController {
                         .map(review -> ReviewResponseDTO.ReviewPreView.builder()
                                 .reviewId(review.getId())
                                 .ownerNickname(review.getUser().getUsername())
-                                .createdAt(review.getCreatedAt())
+                                .createdAt(review.getCreatedAt().toLocalDate())
                                 .lecture(review.getLecture().getName())
                                 .content(review.getContent())
                                 .rate(review.getRate())
@@ -104,7 +104,7 @@ public class ReviewController {
                 .ownerNickname(review.getUser().getUsername())
                 .rate(review.getRate())
                 .content(review.getContent())
-                .createdAt(review.getCreatedAt())
+                .createdAt(review.getCreatedAt().toLocalDate())
                 .build();
     }
 }
