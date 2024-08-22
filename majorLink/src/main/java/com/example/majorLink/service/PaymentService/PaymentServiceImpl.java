@@ -14,11 +14,9 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.request.PrepareData;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -52,6 +50,8 @@ public class PaymentServiceImpl implements PaymentService{
                 .merchantUid(merchantUid)
                 .build();
 
+        ProductOrder saveProductOrder = productOrderRepository.save(productOrder);
+
         PrepareData prepareData = new PrepareData(merchantUid, amount);
 
         iamportClient.postPrepare(prepareData);
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         paymentRepository.save(payment);
 
-        return productOrderRepository.save(productOrder);
+        return saveProductOrder;
     }
 
     // 결제 검증
