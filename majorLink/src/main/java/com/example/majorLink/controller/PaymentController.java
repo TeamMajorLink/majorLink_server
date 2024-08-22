@@ -34,6 +34,7 @@ public class PaymentController {
         ProductOrder productOrder = paymentService.prepareProductOrder(user.getId(), request);
 
         return ProductOrderResponseDTO.builder()
+                .product(String.valueOf(productOrder.getProduct()))
                 .merchantUid(productOrder.getMerchantUid())
                 .amount(productOrder.getAmount())
                 .build();
