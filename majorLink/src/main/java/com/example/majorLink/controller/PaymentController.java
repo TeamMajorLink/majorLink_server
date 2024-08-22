@@ -53,7 +53,6 @@ public class PaymentController {
 
         return PaymentResponseDTO.builder()
                 .paymentStatus(isValid ? PaymentStatus.PAID : PaymentStatus.FAILED)
-                .amount(request.getAmount())
                 .build();
     }
 
