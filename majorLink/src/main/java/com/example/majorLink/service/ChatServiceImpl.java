@@ -9,6 +9,8 @@ import com.example.majorLink.repository.ChatRoomRepository;
 import com.example.majorLink.repository.UserChatRepository;
 import com.example.majorLink.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +27,9 @@ public class ChatServiceImpl implements ChatService{
     private final UserRepository userRepository;
 
 
-    //메세지 저장
+
     @Override
-    public ChatMessage saveChatMessage(ChatMessage chatMessage, UUID sender) {
-        User user = userRepository.findById(sender).orElseThrow(() -> new RuntimeException("존재하지않는 유저입니다")); //예외처리 부분 추후 수정
+    public ChatMessage saveChatMessage(ChatMessage chatMessage, User user) {
         // 로그 추가
         System.out.println("User found: " + user);
 
@@ -37,9 +38,7 @@ public class ChatServiceImpl implements ChatService{
         // 로그 추가
         System.out.println("Saving chat message: " + chatMessage);
 
-
         return chatMessageRepository.save(chatMessage);
-
     }
 
     //방id로 메세지 조회
@@ -63,22 +62,32 @@ public class ChatServiceImpl implements ChatService{
                 .collect(Collectors.toList()); //List<User>로 변환
     }
 
-
-
-
-    //채팅방 생성
     @Override
-    public ChatRoom createChatroom(String roomName) {
+    public ChatRoom createChatroom(String roomName, User user) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .name(roomName)
                 .build();
+//        UserChat userChat = UserChat.builder()
+//                .chatRoom(chatRoom)
+//                .user(user)
+//                .build();
         return chatRoomRepository.save(chatRoom);
     }
 
 
+    //채팅방 생성
+//    @Override
+//    public ChatRoom createChatroom(String roomName) {
+//        ChatRoom chatRoom = ChatRoom.builder()
+//                .name(roomName)
+//                .build();
+//        return chatRoomRepository.save(chatRoom);
+//    }
+
+
     //채팅방 입장
-    public String joinRoom(Long roomId, UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("존재하지 않는 유저 입니다"));
+    public String joinRoom(Long roomId, User user) {
+
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("존재하지 않는 채팅방입니다"));
         UserChat userChat = UserChat.builder()
                 .user(user)

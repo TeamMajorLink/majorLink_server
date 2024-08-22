@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface ChatService {
 
     //메세지 저장
-    ChatMessage saveChatMessage(ChatMessage chatMessage, UUID sender);
+    ChatMessage saveChatMessage(ChatMessage chatMessage, User user);
 
     //채팅방 메세지 전체 조회
     List<ChatMessage> getChatMessageById(Long roomId);
@@ -23,10 +23,10 @@ public interface ChatService {
     List<User> getUserById(Long roomId);
 
     //채팅방 생성
-    ChatRoom createChatroom(String roomName);
+    ChatRoom createChatroom(String roomName, User user);
 
     //채팅방 입장
-    String joinRoom(Long roomId, UUID userId);
+    String joinRoom(Long roomId, User user);
 
     ChatRoom getChatroomById(Long roomId);
 
