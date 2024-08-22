@@ -60,7 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
         Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
-        Notification notification = notificationRepository.save(createNotification(lecture.getUser(), lectureId, content));
+        Notification notification = notificationRepository.save(createNotification(sender, lectureId, content));
         UUID receiverId = lecture.getUser().getId();
 
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByUserId(receiverId);       // 알림 받는 사람 아이디
