@@ -42,7 +42,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: major-redis.xw41il.ng.0001.apn2.cache.amazonaws.com
       port: 6379
       database: 1
 
