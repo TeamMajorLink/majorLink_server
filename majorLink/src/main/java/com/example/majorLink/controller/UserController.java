@@ -105,4 +105,10 @@ public class UserController {
         return user.getId();
     }
 
+    //test api 추가
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "API is working";
+    }
+
 }
