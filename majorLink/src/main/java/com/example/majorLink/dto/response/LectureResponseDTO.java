@@ -102,7 +102,8 @@ public class LectureResponseDTO {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CategoryList {
+    public static class CategoryAndLevelList {
         List<CategoryResponseDTO> categoryList;
+        List<String> levelList;
     }
 }

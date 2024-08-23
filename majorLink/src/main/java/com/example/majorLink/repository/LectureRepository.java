@@ -14,8 +14,11 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     Page<Lecture> orderByCurPNum(Pageable pageable);
 
     @Query("SELECT l FROM Lecture l WHERE l.category.id = :categoryId")
-    Page<Lecture> orderByCategoryId(Long categoryId, Pageable pageable);
+    Page<Lecture> findByCategoryId(Long categoryId, Pageable pageable);
 
     @Query("SELECT l FROM Lecture l ORDER BY l.createdAt DESC")
     Page<Lecture> orderByCreatedAt(Pageable pageable);
+
+    @Query("SELECT l FROM Lecture l WHERE l.level = :level")
+    Page<Lecture> findByLevel(int i, String level, Pageable pageable);
 }

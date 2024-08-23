@@ -25,6 +25,7 @@ public interface LectureService {
     Page<Lecture> getNewLecture(Integer page);
     Page<Lecture> getMostRecruitedLecture(Integer page);
     Page<Lecture> getLectureByCategory(Integer page, Long categoryId);
+    Page<Lecture> getLectureByLevel(int i, String level);
 
     List<LectureResponseDTO.CategoryResponseDTO> getAllCategories();
 }

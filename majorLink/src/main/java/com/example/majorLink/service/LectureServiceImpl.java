@@ -224,7 +224,7 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public Page<Lecture> getLectureByCategory(Integer page, Long categoryId) {
 
-        return lectureRepository.orderByCategoryId(categoryId, PageRequest.of(page, 10));
+        return lectureRepository.findByCategoryId(categoryId, PageRequest.of(page, 10));
     }
 
     // 카테고리 조회
@@ -234,5 +234,12 @@ public class LectureServiceImpl implements LectureService {
         return categories.stream()
                 .map(category -> new LectureResponseDTO.CategoryResponseDTO(category.getId(), category.getMainCategory()))
                 .collect(Collectors.toList());
+    }
+
+    // 레벨별 클래스 조회
+    @Override
+    public Page<Lecture> getLectureByLevel(int i, String level) {
+
+        return lectureRepository.findByLevel(i, level, PageRequest.of(0, 10));
     }
 }
