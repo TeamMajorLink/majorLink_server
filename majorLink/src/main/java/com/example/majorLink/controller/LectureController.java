@@ -275,7 +275,7 @@ public class LectureController {
     }
 
     // 카테고리별 강의 조회 api
-    @GetMapping("/{categoryId}")
+    @GetMapping("/{categoryId}/category")
     @ResponseBody
     public LectureResponseDTO.LecturePreViewList getLecturesByCategory(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                        @PathVariable(name = "categoryId") Long categoryId){
@@ -311,7 +311,7 @@ public class LectureController {
                 .build();
     }
 
-    // 강의 정보 list 조회 api
+    // 카테고리, 레벨 조회 api
     @GetMapping("/categories")
     @ResponseBody
     public LectureResponseDTO.LectureInfoList getCategoryList() {
@@ -321,24 +321,24 @@ public class LectureController {
                 .map(Level::name)
                 .collect(Collectors.toList());
 
-        List<String> days = Arrays.stream(Day.values())
+        /*List<String> days = Arrays.stream(Day.values())
                 .map(Day::name)
                 .collect(Collectors.toList());
 
         List<String> exams = Arrays.stream(Exam.values())
                 .map(Exam::name)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
         return LectureResponseDTO.LectureInfoList.builder()
                 .categoryList(categories)
                 .levelList(levels)
-                .dayList(days)
-                .examList(exams)
+/*                .dayList(days)
+                .examList(exams)*/
                 .build();
     }
 
     // 레벨별 강의 조회 api
-    @GetMapping("/{level}")
+    @GetMapping("/{level}/level")
     @ResponseBody
     public LectureResponseDTO.LecturePreViewList getLecturesByLevel(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                     @PathVariable(name = "level") Level level){
