@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -94,6 +96,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .build();
 
+    }
+
+    //uuid 뽑는 api
+    @GetMapping("/get-uuid")
+    public UUID getUuid(@AuthenticationPrincipal AuthUser authUser) {
+        User user = authUser.getUser();
+        return user.getId();
     }
 
 }
