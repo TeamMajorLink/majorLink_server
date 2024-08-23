@@ -3,9 +3,9 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.Category;
 import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.User;
+import com.example.majorLink.domain.enums.Level;
 import com.example.majorLink.domain.mapping.Liked;
 import com.example.majorLink.domain.mapping.TuteeLecture;
-import com.example.majorLink.domain.mapping.TutorLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
 import com.example.majorLink.dto.response.LectureResponseDTO;
 import com.example.majorLink.repository.*;
@@ -29,7 +29,6 @@ public class LectureServiceImpl implements LectureService {
     private final LectureRepository lectureRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-    private final TutorLectureRepository tutorLectureRepository;
     private final TuteeLectureRepository tuteeLectureRepository;
     private final LikedRepository likedRepository;
     private final NotificationService notificationService;
@@ -66,13 +65,6 @@ public class LectureServiceImpl implements LectureService {
 
         Lecture saveLecture = lectureRepository.save(lecture);
 
-        TutorLecture tutorLecture = TutorLecture.builder()
-                .user(user)
-                .lecture(saveLecture)
-                .build();
-
-        tutorLectureRepository.save(tutorLecture);
-
         return saveLecture;
     }
 
@@ -82,16 +74,12 @@ public class LectureServiceImpl implements LectureService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
-        TutorLecture tutorLecture = tutorLectureRepository.findByLectureId(lectureId)
+        // 기존의 Lecture 엔티티를 조회
+        Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lecture ID"));
 
-        // 기존의 Lecture 엔티티를 조회
-        Lecture lecture = tutorLecture.getLecture();
-
-        UUID tutorId = tutorLecture.getUser().getId();
-
         // 요청한 사용자가 해당 강의를 개설한 사용자와 일치하는지 확인
-        if (!tutorId.equals(user.getId())) {
+        if (!lecture.getUser().getId().equals(user.getId())) {
             throw new IllegalStateException("You do not have permission to update this lecture");
         }
 
@@ -127,19 +115,15 @@ public class LectureServiceImpl implements LectureService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
-        TutorLecture tutorLecture = tutorLectureRepository.findByLectureId(lectureId)
+        // 기존의 Lecture 엔티티를 조회
+        Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lecture ID"));
 
-        // 기존의 Lecture 엔티티를 조회
-        Lecture lecture = tutorLecture.getLecture();
-        UUID tutorId = tutorLecture.getUser().getId();
-
         // 요청한 사용자가 해당 강의를 개설한 사용자와 일치하는지 확인
-        if (!tutorId.equals(user.getId())) {
+        if (!lecture.getUser().getId().equals(user.getId())) {
             throw new IllegalStateException("You do not have permission to delete this lecture");
         }
 
-        tutorLectureRepository.deleteAllByLecture(lecture);
         tuteeLectureRepository.deleteAllByLecture(lecture);
         likedRepository.deleteAllByLecture(lecture);
 
@@ -241,7 +225,7 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public Page<Lecture> getLectureByCategory(Integer page, Long categoryId) {
 
-        return lectureRepository.orderByCategoryId(categoryId, PageRequest.of(page, 10));
+        return lectureRepository.findByCategoryId(categoryId, PageRequest.of(page, 10));
     }
 
     // 카테고리 조회
@@ -251,5 +235,12 @@ public class LectureServiceImpl implements LectureService {
         return categories.stream()
                 .map(category -> new LectureResponseDTO.CategoryResponseDTO(category.getId(), category.getMainCategory()))
                 .collect(Collectors.toList());
+    }
+
+    // 레벨별 클래스 조회
+    @Override
+    public Page<Lecture> getLectureByLevel(Integer page, Level level) {
+
+        return lectureRepository.findByLevel(level, PageRequest.of(0, 10));
     }
 }

@@ -107,6 +107,10 @@ public class PaymentServiceImpl implements PaymentService{
         payment.updatePaymentStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
 
+        // 결제가 성공하면 포인트 증가
+        user.addPoint(paymentResponse.getAmount().intValue());
+        userRepository.save(user);
+
         return true;
     }
 }

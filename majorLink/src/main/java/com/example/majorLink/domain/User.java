@@ -1,15 +1,14 @@
 package com.example.majorLink.domain;
 
 import com.example.majorLink.domain.enums.Gender;
-import com.example.majorLink.domain.enums.LearnPart;
 import com.example.majorLink.domain.enums.UserStatus;
-import com.example.majorLink.domain.enums.Role;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -98,5 +97,9 @@ public class User extends BaseEntity{
     }
     public void updateGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public void addPoint(Integer amount) {
+        this.point += amount;
     }
 }
