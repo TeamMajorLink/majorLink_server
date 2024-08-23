@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,11 @@ public class LectureResponseDTO {
         String mainCategory;
         String subCategory;
         String avgRate;
+        String tutor;
+        String level;
+        String day;
+        Integer curri;
+        LocalTime time;
     }
 
     @Builder
@@ -102,8 +108,10 @@ public class LectureResponseDTO {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CategoryAndLevelList {
+    public static class LectureInfoList {
         List<CategoryResponseDTO> categoryList;
         List<String> levelList;
+        List<String> dayList;
+        List<String> examList;
     }
 }

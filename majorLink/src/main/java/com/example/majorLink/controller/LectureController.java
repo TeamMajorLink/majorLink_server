@@ -2,6 +2,8 @@ package com.example.majorLink.controller;
 
 import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.User;
+import com.example.majorLink.domain.enums.Day;
+import com.example.majorLink.domain.enums.Exam;
 import com.example.majorLink.domain.enums.Level;
 import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
@@ -85,12 +87,17 @@ public class LectureController {
                             return LectureResponseDTO.LecturePreView.builder()
                                     .lectureId(lecture.getId())
                                     .name(lecture.getName())
+                                    .mainCategory(lecture.getCategory().getMainCategory())
+                                    .subCategory(lecture.getSubCategory())
                                     .cNum(lecture.getCNum())
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
-                                    .mainCategory(lecture.getCategory().getMainCategory())
-                                    .subCategory(lecture.getSubCategory())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
@@ -178,6 +185,11 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
@@ -210,6 +222,11 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
@@ -241,6 +258,11 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
@@ -273,6 +295,11 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
@@ -284,19 +311,29 @@ public class LectureController {
                 .build();
     }
 
-    // 카테고리, 레벨 조회 api
+    // 강의 정보 list 조회 api
     @GetMapping("/categories")
     @ResponseBody
-    public LectureResponseDTO.CategoryAndLevelList getCategoryList() {
+    public LectureResponseDTO.LectureInfoList getCategoryList() {
         List<LectureResponseDTO.CategoryResponseDTO> categories = lectureService.getAllCategories();
 
         List<String> levels = Arrays.stream(Level.values())
                 .map(Level::name)
                 .collect(Collectors.toList());
 
-        return LectureResponseDTO.CategoryAndLevelList.builder()
+        List<String> days = Arrays.stream(Day.values())
+                .map(Day::name)
+                .collect(Collectors.toList());
+
+        List<String> exams = Arrays.stream(Exam.values())
+                .map(Exam::name)
+                .collect(Collectors.toList());
+
+        return LectureResponseDTO.LectureInfoList.builder()
                 .categoryList(categories)
                 .levelList(levels)
+                .dayList(days)
+                .examList(exams)
                 .build();
     }
 
@@ -304,7 +341,7 @@ public class LectureController {
     @GetMapping("/{level}")
     @ResponseBody
     public LectureResponseDTO.LecturePreViewList getLecturesByLevel(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                                    @PathVariable(name = "level") String level){
+                                                                    @PathVariable(name = "level") Level level){
         Page<Lecture> lectureList = lectureService.getLectureByLevel(page-1, level);
 
         return LectureResponseDTO.LecturePreViewList.builder()
@@ -321,6 +358,11 @@ public class LectureController {
                                     .pNum(lecture.getPNum())
                                     .imageUrl(lecture.getImgUrl())
                                     .avgRate(String.format("%.1f", avgRate))
+                                    .curri(lecture.getCurri())
+                                    .day(lecture.getDay().name())
+                                    .level(lecture.getLevel().name())
+                                    .time(lecture.getTime())
+                                    .tutor(lecture.getTutor())
                                     .build();
                         })
                         .collect(Collectors.toList()))
