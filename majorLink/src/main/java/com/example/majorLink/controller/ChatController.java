@@ -114,6 +114,10 @@ public class ChatController {
     }
 
 
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "API is working";
+    }
 
 
 
