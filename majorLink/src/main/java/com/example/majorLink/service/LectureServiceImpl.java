@@ -3,6 +3,7 @@ package com.example.majorLink.service;
 import com.example.majorLink.domain.Category;
 import com.example.majorLink.domain.Lecture;
 import com.example.majorLink.domain.User;
+import com.example.majorLink.domain.enums.Level;
 import com.example.majorLink.domain.mapping.Liked;
 import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
@@ -238,8 +239,8 @@ public class LectureServiceImpl implements LectureService {
 
     // 레벨별 클래스 조회
     @Override
-    public Page<Lecture> getLectureByLevel(int i, String level) {
+    public Page<Lecture> getLectureByLevel(Integer page, Level level) {
 
-        return lectureRepository.findByLevel(i, level, PageRequest.of(0, 10));
+        return lectureRepository.findByLevel(level, PageRequest.of(0, 10));
     }
 }

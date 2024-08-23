@@ -1,6 +1,7 @@
 package com.example.majorLink.service;
 
 import com.example.majorLink.domain.Lecture;
+import com.example.majorLink.domain.enums.Level;
 import com.example.majorLink.domain.mapping.TuteeLecture;
 import com.example.majorLink.dto.request.LectureRequestDTO;
 import com.example.majorLink.dto.response.LectureResponseDTO;
@@ -25,7 +26,7 @@ public interface LectureService {
     Page<Lecture> getNewLecture(Integer page);
     Page<Lecture> getMostRecruitedLecture(Integer page);
     Page<Lecture> getLectureByCategory(Integer page, Long categoryId);
-    Page<Lecture> getLectureByLevel(int i, String level);
+    Page<Lecture> getLectureByLevel(Integer page, Level level);
 
     List<LectureResponseDTO.CategoryResponseDTO> getAllCategories();
 }

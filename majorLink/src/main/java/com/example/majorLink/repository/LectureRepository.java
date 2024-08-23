@@ -1,6 +1,7 @@
 package com.example.majorLink.repository;
 
 import com.example.majorLink.domain.Lecture;
+import com.example.majorLink.domain.enums.Level;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,5 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     Page<Lecture> orderByCreatedAt(Pageable pageable);
 
     @Query("SELECT l FROM Lecture l WHERE l.level = :level")
-    Page<Lecture> findByLevel(int i, String level, Pageable pageable);
+    Page<Lecture> findByLevel(Level level, Pageable pageable);
 }
